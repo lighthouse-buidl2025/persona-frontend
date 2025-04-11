@@ -34,6 +34,7 @@ export default function Wallet({ children }: { children: React.ReactNode }) {
       settings={{
         environmentId: process.env.NEXT_PUBLIC_ENVIRONMENT_ID!,
         walletConnectors: [EthereumWalletConnectors],
+        shadowDOMEnabled: false,
       }}
     >
       <WagmiProvider config={config}>

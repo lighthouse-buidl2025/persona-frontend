@@ -1,5 +1,6 @@
 "use client";
 import { Progress } from "@/components/ui/progress";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -23,11 +24,18 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function Persona() {
+  const { primaryWallet } = useDynamicContext();
+  const address = primaryWallet?.address;
+
   return (
     <div>
       <h1 className="text-2xl font-bold p-6 text-gray-700">Persona Analysis</h1>
       <p className="text-gray-500 px-6 mb-4">
-        지갑 0x7F...의 온체인 행동 패턴 분석 결과
+        지갑{" "}
+        {address
+          ? `${address.slice(0, 4)}...${address.slice(-4)}`
+          : "연결되지 않음"}
+        의 온체인 행동 패턴 분석 결과
       </p>
       <div className="">
         <section className="px-6">
@@ -47,7 +55,7 @@ export default function Persona() {
             <div key={el.type} className="flex flex-col">
               <div>
                 <h4
-                  className={c("text-lg font-bold mt-4 mb-3", {
+                  className={cn("text-lg font-bold mt-4 mb-3", {
                     "text-blue-500": el.color === "blue",
                     "text-yellow-500": el.color === "yellow",
                     "text-green-500": el.color === "green",
@@ -58,7 +66,7 @@ export default function Persona() {
                 </h4>
                 <Progress
                   value={87}
-                  indicatorClassName={c({
+                  indicatorClassName={cn({
                     "bg-blue-500": el.color === "blue",
                     "bg-yellow-500": el.color === "yellow",
                     "bg-green-500": el.color === "green",
@@ -105,7 +113,8 @@ const theme: {
   { type: "Degen", color: "pink" },
 ];
 
-import c from "classnames";
+import { cn } from "@/lib/utils";
+import MainTemplates from "@/components/main-templates";
 
 function Card({
   type,
@@ -116,7 +125,7 @@ function Card({
 }) {
   return (
     <div
-      className={c("rounded-lg w-[180px] h-[90px]", {
+      className={cn("rounded-lg w-[180px] h-[90px]", {
         "bg-blue-100": color === "blue",
         "bg-green-100": color === "green",
         "bg-yellow-100": color === "yellow",
@@ -124,7 +133,7 @@ function Card({
       })}
     >
       <div
-        className={c("flex flex-col items-center justify-center h-full", {
+        className={cn("flex flex-col items-center justify-center h-full", {
           "text-blue-500": color === "blue",
           "text-green-500": color === "green",
           "text-yellow-500": color === "yellow",

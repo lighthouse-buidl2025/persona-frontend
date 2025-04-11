@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
+// import { TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
+// import { Tooltip } from "@radix-ui/react-tooltip";
+// import { TooltipContent } from "@radix-ui/react-tooltip";
+// import { AlertTriangle } from "lucide-react";
 
 export default function Header() {
   return (
@@ -16,10 +20,25 @@ export default function Header() {
           <div className="flex gap-4 items-center">
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/persona">Persona</Link>
-            <Link href="/">Recommendations</Link>
+            <Link href="/recommendations">Recommended</Link>
             <Link href="/">Automation</Link>
             <Link href="/">Community</Link>
-            <DynamicWidget />
+            {/* <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <AlertTriangle className="text-orange-400 w-5 h-5 cursor-pointer" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="bg-white text-black text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+                    ✉️ 이메일이 아직 연동되지 않았어요. <br />
+                    <button className="text-indigo-600 underline mt-1">
+                      지금 연동하기
+                    </button>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider> */}
+            <DynamicWidget innerButtonComponent={<>Sign in</>} />
           </div>
         </div>
       </nav>

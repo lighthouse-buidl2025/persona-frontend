@@ -10,6 +10,8 @@ import {
 import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 import { Input } from "@/components/ui/input";
 import { ArrowUp } from "lucide-react";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import MainTemplates from "@/components/main-templates";
 const chartData = [
   {
     subject: "IRL User",
@@ -53,12 +55,14 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 export default function Dashboard() {
+  const { primaryWallet } = useDynamicContext();
+  const address = primaryWallet?.address;
   return (
     <div>
       <div className="flex gap-4 px-6">
         <section className="w-[30%] flex flex-col items-center col-span-1 border border-gray-200 rounded-lg p-6 my-6 ">
           <div className="flex justify-center items-center bg-indigo-200 text-indigo-600 font-bold w-[60px] h-[60px] rounded-[9999px] p-10">
-            0x7F...
+            {address ? `${address.slice(0, 4)}...` : "0x0000"}
           </div>
           <h1 className="text-xl font-bold text-gray-700">Explorer Type</h1>
           <div className="flex flex-col items-center mt-2 text-sm">
