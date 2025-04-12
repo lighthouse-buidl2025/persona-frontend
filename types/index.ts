@@ -39,6 +39,7 @@ interface ContractItem {
   category: string | null;
   description: string | null;
   frequency: number;
+  created_at: string;
 }
 
 type CommunityContract = {

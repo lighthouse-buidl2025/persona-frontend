@@ -105,7 +105,7 @@ export default function Recommended() {
             </div>
           </section>
         </div>
-        <RecommendationHistory />
+        <RecommendationHistory groupData={groupData} />
       </div>
     </div>
   );

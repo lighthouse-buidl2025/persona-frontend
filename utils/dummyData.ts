@@ -33,6 +33,7 @@ export const dummyPersonaGroup: ContractItem[] = [
     description:
       "Velora is the most comprehensive and flexible trading protocol for Decentralized Finance (DeFi). We use decentralized intents to provide advanced features such as limit orders, super hooks, and chain-abstracted swaps.",
     frequency: 34,
+    created_at: "2025-04-12 01:07:16",
   },
   {
     contract_address: "0x111111125421ca6dc452d289314280a0f8842a65",
@@ -40,6 +41,7 @@ export const dummyPersonaGroup: ContractItem[] = [
     category: null,
     description: null,
     frequency: 31,
+    created_at: "2025-04-12 01:07:16",
   },
   {
     contract_address: "0x0000000000a39bb272e79075ade125fd351887ac",
@@ -47,6 +49,7 @@ export const dummyPersonaGroup: ContractItem[] = [
     category: "nft",
     description: "The NFT marketplace for pro traders",
     frequency: 31,
+    created_at: "2025-04-12 01:07:16",
   },
   {
     contract_address: "0xcf5540fffcdc3d510b18bfca6d2b9987b0772559",
@@ -55,6 +58,7 @@ export const dummyPersonaGroup: ContractItem[] = [
     description:
       "Odos is a cutting-edge platform that caters to both institutional and retail traders, empowering them with a competitive edge in swaps, using our comprehensive suite of tools to offer a wide array of functionalities to enhance trading strategies and optimize capital efficiency.",
     frequency: 30,
+    created_at: "2025-04-12 01:07:16",
   },
   {
     contract_address: "0x66a9893cc07d91d95644aedd05d03f95e1dba8af",
@@ -63,6 +67,7 @@ export const dummyPersonaGroup: ContractItem[] = [
     description:
       "Uniswap v4 inherits all of the capital efficiency gains of Uniswap v3, but provides flexibility via hooks and gas optimizations across the entire lifecycle",
     frequency: 29,
+    created_at: "2025-04-12 01:07:16",
   },
 ];
 export const dummyAgents: { agents: Agent[] } = {
