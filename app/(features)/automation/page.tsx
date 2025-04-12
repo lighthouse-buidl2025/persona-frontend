@@ -6,6 +6,7 @@ import AIAssistant from "@/components/ai-assistant";
 import RecommendationHistory from "@/components/recommendation-history";
 import TypeBadge from "@/components/type-badge";
 import AutomationActivityLog from "@/components/automation/automation-activity-log";
+import AutomationRuleCard from "@/components/automation/automation-rule-card";
 
 export default function Automation() {
   const { primaryWallet } = useDynamicContext();
@@ -30,6 +31,10 @@ export default function Automation() {
               Set up automated trading strategies and investment services
               tailored to your persona type.
             </p>
+            <AutomationRuleCard></AutomationRuleCard>
+            <Button className="mt-4" variant="outline">
+            + Add New Automation Rule
+            </Button>
           </section>
         </div>
         <div>

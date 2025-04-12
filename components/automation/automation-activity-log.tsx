@@ -9,46 +9,28 @@ import {
 export default function AutomationActivityLog() {
   const invoices = [
     {
-      invoice: "INV001",
-      paymentStatus: "Paid",
-      totalAmount: "$250.00",
-      paymentMethod: "Credit Card",
+      invoice: "AUTO001",
+      paymentStatus: "Executed",
+      totalAmount: "1 wETH",
+      paymentMethod: "Transfer to 0x3aCf3...",
     },
     {
-      invoice: "INV002",
-      paymentStatus: "Pending",
-      totalAmount: "$150.00",
-      paymentMethod: "PayPal",
+      invoice: "AUTO002",
+      paymentStatus: "Timeout",
+      totalAmount: "0.5 wETH",
+      paymentMethod: "Transfer to 0x5bF12...",
     },
     {
-      invoice: "INV003",
-      paymentStatus: "Unpaid",
-      totalAmount: "$350.00",
-      paymentMethod: "Bank Transfer",
+      invoice: "AUTO003",
+      paymentStatus: "Failed",
+      totalAmount: "1.2 wETH",
+      paymentMethod: "Transfer to 0x3aCf3...",
     },
     {
-      invoice: "INV004",
-      paymentStatus: "Paid",
-      totalAmount: "$450.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV005",
-      paymentStatus: "Paid",
-      totalAmount: "$550.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV006",
-      paymentStatus: "Pending",
-      totalAmount: "$200.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV007",
-      paymentStatus: "Unpaid",
-      totalAmount: "$300.00",
-      paymentMethod: "Credit Card",
+      invoice: "AUTO004",
+      paymentStatus: "Executed",
+      totalAmount: "0.8 wETH",
+      paymentMethod: "Transfer to 0xc02aa...83c756cc2",
     },
   ];
 
