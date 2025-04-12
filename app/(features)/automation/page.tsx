@@ -22,7 +22,7 @@ export default function Automation() {
       </p>
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
-          <TypeBadge />
+          <TypeBadge isLoading={false} data={null} />
           <section className="w-full bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] flex flex-col border border-gray-200 rounded-lg p-6">
             <h1 className="text-xl font-bold text-gray-700 font-[family-name:var(--font-poppins)]">
               Automation Rules
@@ -33,7 +33,7 @@ export default function Automation() {
             </p>
             <AutomationRuleCard></AutomationRuleCard>
             <Button className="mt-4" variant="outline">
-            + Add New Automation Rule
+              + Add New Automation Rule
             </Button>
           </section>
         </div>

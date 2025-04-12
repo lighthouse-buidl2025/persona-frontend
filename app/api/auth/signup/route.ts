@@ -24,7 +24,7 @@ export async function POST(request: Request) {
         }),
       }
     );
-
+    console.log({ signupResponse });
     const signupData = await signupResponse.json();
 
     const response = NextResponse.json(

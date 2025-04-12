@@ -87,14 +87,14 @@ export default function Header() {
           <div className="flex items-center">
             <Link
               href="/"
-              className={cn("text-2xl py-4 font-medium mr-8", {
+              className={cn("text-2xl font-medium mr-8", {
                 "text-indigo-500": isTransparent,
               })}
             >
               PersonaChain AI
             </Link>
 
-            {userData?.address && (
+            {primaryWallet?.address && (
               <div className="flex gap-4 items-center font-light text-gray-800">
                 <Link
                   href="/dashboard"

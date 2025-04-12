@@ -15,6 +15,11 @@ export default function PersonaRecommendations({
         Optimal profit opportunities that match your persona
       </p>{" "}
       <div className="max-h-[342px] overflow-y-auto">
+        {groupData ? (
+          <Protocols
+            groupData={groupData.slice(0, 1).concat(groupData.slice(3))}
+          />
+        ) : null}
         {groupData ? <Protocols groupData={groupData} /> : null}
       </div>
     </section>

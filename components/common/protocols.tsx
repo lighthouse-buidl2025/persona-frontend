@@ -60,7 +60,7 @@ export default function Protocols({
             </Tooltip>
           </TooltipProvider>
           <p className="text-green-500 text-xs font-semibold">
-            예상 APY: 12.4%
+            Expected APY: {el.subdescription}
           </p>
         </div>
       </div>

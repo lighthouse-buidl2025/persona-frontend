@@ -43,7 +43,11 @@ export default function Recommended() {
                 </span>
               </div>
               <div className="max-h-[342px] overflow-y-auto">
-                {groupData ? <Protocols groupData={groupData} /> : null}
+                {groupData ? (
+                  <Protocols
+                    groupData={groupData.slice(0, 1).concat(groupData.slice(3))}
+                  />
+                ) : null}
               </div>
             </div>
           </section>

@@ -38,6 +38,7 @@ interface ContractItem {
   name: string | null;
   category: string | null;
   description: string | null;
+  subdescription: string;
   frequency: number;
   created_at: string;
 }

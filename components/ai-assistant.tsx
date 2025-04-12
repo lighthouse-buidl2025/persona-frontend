@@ -157,101 +157,99 @@ export default function AIAssistant({ className }: { className?: string }) {
         "bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] flex flex-col border border-gray-200 rounded-lg p-6",
         className
       )}
-      style={{ height: "750px", width: "100%" }}
+      // style={{ height: "750px", width: "100%" }}
     >
       {/* 전체 컨테이너를 일정한 최대 너비로 제한 */}
-      <div
+      {/* <div
         className="w-full mx-auto flex flex-col h-full"
         style={{ maxWidth: "500px" }}
-      >
-        {/* 헤더 섹션 */}
-        <div className="bg-indigo-500 rounded-lg px-4 py-2 flex justify-between items-center mb-3 w-full">
-          <h1 className="text-xl font-bold text-white font-[family-name:var(--font-poppins)]">
-            AI Assistant
-          </h1>
-          <div className="relative">
-            <select
-              className="bg-indigo-600 text-white rounded px-2 py-1 text-sm"
-              value={selectedAgentId || ""}
-              onChange={(e) => handleAgentChange(e.target.value)}
-            >
-              {agents?.map((agent: any) => (
-                <option key={agent.id} value={agent.id}>
-                  {agent.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* 에이전트 정보 섹션 */}
-        {selectedAgent && (
-          <div className="flex items-center gap-2 mb-3 px-2 w-full">
-            {selectedAgent.avatarUrl && (
-              <img
-                src={selectedAgent.avatarUrl}
-                alt={selectedAgent.name}
-                className="w-8 h-8 rounded-full"
-              />
-            )}
-            <div>
-              <p className="text-sm font-semibold">{selectedAgent.name}</p>
-              <p className="text-xs text-gray-500">
-                {selectedAgent.description}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* 스크롤 가능한 메시지 컨테이너 - 고정 높이 설정 */}
-        <div
-          ref={messagesContainerRef}
-          className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent pr-2 w-full flex-1"
-          style={{ flexShrink: 1, flexGrow: 1 }}
-        >
-          <div className="flex flex-col w-full">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex ${
-                  msg.user === "user" ? "justify-end" : "justify-start"
-                } mb-2`}
-              >
-                <div
-                  className={`rounded-xl px-4 py-3 max-w-[80%] ${
-                    msg.user === "user"
-                      ? "bg-indigo-100 border border-indigo-200"
-                      : "bg-gray-100 border border-gray-200"
-                  }`}
-                >
-                  <p className="text-sm">{msg.text}</p>
-                </div>
-              </div>
+      > */}
+      {/* 헤더 섹션 */}
+      <div className="bg-indigo-500 rounded-lg px-4 py-2 flex justify-between items-center mb-3 w-full">
+        <h1 className="text-xl font-bold text-white font-[family-name:var(--font-poppins)]">
+          AI Assistant
+        </h1>
+        <div className="relative">
+          <select
+            className="bg-indigo-600 text-white rounded px-2 py-1 text-sm"
+            value={selectedAgentId || ""}
+            onChange={(e) => handleAgentChange(e.target.value)}
+          >
+            {agents?.map((agent: any) => (
+              <option key={agent.id} value={agent.id}>
+                {agent.name}
+              </option>
             ))}
-          </div>
-        </div>
-
-        {/* 입력 영역 */}
-        <div className="pt-4 w-full">
-          <div className="flex items-center gap-2">
-            <Input
-              ref={inputRef}
-              className="w-full"
-              value={message}
-              placeholder="Enter message..."
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-            <Button
-              variant="purple"
-              className="rounded-full w-8 h-8 p-2.5"
-              onClick={submit}
-            >
-              <MoveUp />
-            </Button>
-          </div>
+          </select>
         </div>
       </div>
+
+      {/* 에이전트 정보 섹션 */}
+      {selectedAgent && (
+        <div className="flex items-center gap-2 mb-3 px-2 w-full">
+          {selectedAgent.avatarUrl && (
+            <img
+              src={selectedAgent.avatarUrl}
+              alt={selectedAgent.name}
+              className="w-8 h-8 rounded-full"
+            />
+          )}
+          <div>
+            <p className="text-sm font-semibold">{selectedAgent.name}</p>
+            <p className="text-xs text-gray-500">{selectedAgent.description}</p>
+          </div>
+        </div>
+      )}
+
+      {/* 스크롤 가능한 메시지 컨테이너 - 고정 높이 설정 */}
+      <div
+        ref={messagesContainerRef}
+        className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent pr-2 w-full flex-1"
+        style={{ flexShrink: 1, flexGrow: 1 }}
+      >
+        <div className="flex flex-col w-full">
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={`flex ${
+                msg.user === "user" ? "justify-end" : "justify-start"
+              } mb-2`}
+            >
+              <div
+                className={`rounded-xl px-4 py-3 max-w-[80%] ${
+                  msg.user === "user"
+                    ? "bg-indigo-100 border border-indigo-200"
+                    : "bg-gray-100 border border-gray-200"
+                }`}
+              >
+                <p className="text-sm">{msg.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 입력 영역 */}
+      <div className="pt-4 w-full">
+        <div className="flex items-center gap-2">
+          <Input
+            ref={inputRef}
+            className="w-full"
+            value={message}
+            placeholder="Enter message..."
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <Button
+            variant="purple"
+            className="rounded-full w-8 h-8 p-2.5"
+            onClick={submit}
+          >
+            <MoveUp />
+          </Button>
+        </div>
+      </div>
+      {/* </div> */}
     </section>
   );
 }

@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
         },
       }
     );
+    console.log("backend url::", process.env.NEXT_PUBLIC_BACKEND_URL);
 
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
