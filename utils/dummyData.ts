@@ -1,4 +1,4 @@
-import { PersonaData, ContractItem } from "@/types";
+import { PersonaData, ContractItem, Agent } from "@/types";
 
 export const dummyPersonaData: PersonaData = {
   wallet: {
@@ -65,3 +65,12 @@ export const dummyPersonaGroup: ContractItem[] = [
     frequency: 29,
   },
 ];
+export const dummyAgents: { agents: Agent[] } = {
+  agents: [
+    {
+      id: "b850bc30-45f8-0041-a00a-83df46d8555d",
+      name: "Eliza",
+      clients: [],
+    },
+  ],
+};
