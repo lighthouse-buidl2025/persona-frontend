@@ -28,7 +28,7 @@ export default function Persona() {
     usePersonaData(primaryWallet?.address);
 
   useEffect(() => {
-    if (primaryWallet?.address) {
+    if (!primaryWallet?.address) {
       router.push("/");
     }
   }, [primaryWallet?.address]);
