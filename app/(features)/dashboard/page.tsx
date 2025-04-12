@@ -1,277 +1,229 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { dummyPersonaData } from "@/utils/dummyData";
+import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
+import { usePersonaData } from "@/hooks/usePersonaData";
+import { formattedVolume, formatTimeAgo } from "@/utils/dateFormat";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import AIAssistant from "@/components/ai-assistant";
-import PersonaScores from "@/components/persona-scores";
+import { useRouter } from "next/navigation";
+import { RefreshCw } from "lucide-react";
+import PersonaHistory from "@/components/persona-history";
+import { PersonaData, UsePersonaDataReturn } from "@/types";
 
-interface PersonaData {
-  wallet: {
-    address: string;
-    balance: number;
-    distinct_contract_count: number;
-    dex_platform_diversity: number;
-    avg_token_holding_period: number;
-    transaction_frequency: number;
-    dex_volume_usd: number;
-    nft_collections_diversity: number;
-    explorer_score: number;
-    diamond_score: number;
-    whale_score: number;
-    degen_score: number;
-    distinct_contract_count_percentile: number;
-    dex_platform_diversity_percentile: number;
-    avg_token_holding_period_percentile: number;
-    transaction_frequency_percentile: number;
-    dex_volume_usd_percentile: number;
-    nft_collections_diversity_percentile: number;
-    created_at: string;
-    updated_at: string;
-  };
-}
-
-export default function Dashboard() {
+export default function Persona() {
   const { primaryWallet } = useDynamicContext();
-  const [personaData, setPersonaData] = useState<PersonaData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [spinning, setSpinning] = useState<"idle" | "slow" | "fast">("idle");
+
+  const handleRefresh = async () => {
+    setSpinning("slow"); // 시작: 천천히 회전
+    // await updateFetch(); // 데이터 fetch
+    setSpinning("fast"); // 끝에 빠르게 돌기
+
+    setTimeout(() => {
+      setSpinning("idle"); // 회전 멈춤
+    }, 500); // 마지막 빠르게 한 바퀴 돌고 정지
+  };
+  const router = useRouter();
+  const { data, isLoading, error, updateFetch }: UsePersonaDataReturn =
+    usePersonaData(primaryWallet?.address);
 
   useEffect(() => {
-    const fetchPersonaData = async () => {
-      if (!primaryWallet?.address) return;
-
-      try {
-        setIsLoading(true);
-        const response = await fetch(
-          `/api/persona-engine/update/${primaryWallet.address}`
-        );
-        const data = await response.json();
-
-        if (data.success) {
-          setPersonaData(data.data);
-        } else {
-          toast.error("Failed to fetch persona data");
-        }
-      } catch (error) {
-        console.error("Error fetching persona data:", error);
-        toast.error("Error fetching persona data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPersonaData();
+    if (primaryWallet?.address) {
+      router.push("/");
+    }
   }, [primaryWallet?.address]);
-
-  // const chartData = personaData
-  //   ? [
-  //       {
-  //         subject: "Explorer",
-  //         value: personaData.wallet.explorer_score,
-  //         fullMark: 10,
-  //       },
-  //       {
-  //         subject: "Diamond",
-  //         value: personaData.wallet.diamond_score,
-  //         fullMark: 10,
-  //       },
-  //       {
-  //         subject: "Whale",
-  //         value: personaData.wallet.whale_score,
-  //         fullMark: 10,
-  //       },
-  //       {
-  //         subject: "Degen",
-  //         value: personaData.wallet.degen_score,
-  //         fullMark: 10,
-  //       },
-  //     ]
-  //   : [];
 
   return (
     <div>
-      <h1 className="text-2xl font-bold p-6 text-gray-700">Dashboard</h1>
-
-      <div className="flex gap-4 px-6">
-        <section className="w-[30%] flex flex-col items-center col-span-1 border border-gray-200 rounded-lg p-6 my-6">
-          <div className="flex justify-center items-center bg-indigo-200 text-indigo-600 font-bold w-[60px] h-[60px] rounded-[9999px] p-10">
-            {primaryWallet?.address.slice(0, 4)}...
-          </div>
-          <h1 className="text-xl font-bold text-gray-700">Persona Analysis</h1>
-          {isLoading ? (
-            <div className="flex flex-col items-center mt-2 text-sm">
-              <p className="text-gray-500">Loading...</p>
-            </div>
-          ) : personaData ? (
-            <div className="flex flex-col items-center mt-2 text-sm">
-              <p className="text-gray-500">
-                Active Chains: {personaData.wallet.distinct_contract_count}
-              </p>
-              <p className="text-gray-500">
-                DEX Platforms: {personaData.wallet.dex_platform_diversity}
-              </p>
-              <p className="text-gray-500">
-                NFT Collections: {personaData.wallet.nft_collections_diversity}
-              </p>
-            </div>
-          ) : null}
-          <Button className="mt-4 rounded-4xl" variant="purple">
-            Details
-          </Button>
-        </section>
-        <section className="w-[40%] border border-gray-200 rounded-lg p-6 my-6">
-          <h1 className="text-xl font-bold text-gray-700">
-            Curation for Explorer Type
+      <div className="flex justify-between">
+        <div>
+          <h1 className="font-[family-name:var(--font-poppins)] text-2xl font-bold p-6 text-gray-700">
+            Persona Analysis
           </h1>
-          <p className="text-gray-500">
-            Perfect Opportunities for Your Persona
-          </p>{" "}
-          <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit">
-            <div>
-              <div className="bg-purple-200 w-[50px] h-[50px] rounded text-purple-500 font-semibold flex justify-center items-center">
-                DEX
-              </div>
-            </div>
-            <div className="px-2">
-              <h3 className="text-gray-700 font-bold">
-                Arbitrum 신규 DEX Protocol
-              </h3>{" "}
-              <p className="text-gray-500">Explorer 유형 사용자 89% 참여</p>{" "}
-              <p className="text-green-500 text-xs font-semibold">
-                예상 APY: 12.4%
-              </p>
-            </div>
-            <Button className="mt-4" variant="purple">
-              Explore
-            </Button>
+          <p className="text-gray-500 px-6 mb-4">
+            On-chain Activity Analysis of{" "}
+            {`${primaryWallet?.address.slice(0, 4)}...`}
+          </p>
+        </div>
+        <div className="text-gray-500 p-6 text-sm">
+          <div className=" flex gap-2 items-center">
+            <RefreshCw
+              size={16}
+              onClick={handleRefresh}
+              className={`
+          transition-transform duration-700
+          ${
+            spinning === "slow"
+              ? "animate-spin-slow"
+              : spinning === "fast"
+              ? "animate-spin-fast"
+              : ""
+          }
+          cursor-pointer
+        `}
+            />
+            {`Last Updated at ${formatTimeAgo("2025-04-12 01:07:16")}`}
           </div>
-          <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit">
-            <div>
-              <div className="bg-pink-200 w-[50px] h-[50px] rounded text-pink-500 font-semibold flex justify-center items-center">
-                NFT
-              </div>
-            </div>
-            <div className="px-2">
-              <h3 className="text-gray-700 font-bold">신규 NFT Project X</h3>{" "}
-              <p className="text-gray-500">Explorer 유형 사용자 89% 참여</p>{" "}
-              <p className="text-green-500 text-xs font-semibold">
-                예상 APY: 12.4%
-              </p>
-            </div>
-            <Button className="mt-4" variant="purple">
-              Explore
-            </Button>
+        </div>
+      </div>
+      <div className="">
+        <section className="px-6">
+          <div className="rounded-lg flex justify-around p-4">
+            {(
+              [
+                "explorer_score",
+                "diamond_score",
+                "whale_score",
+                "degen_score",
+              ] as const
+            ).map((el) => (
+              <Card type={el} key={el} data={data} />
+            ))}
           </div>
-        </section>
-
-        <section className="w-[30%] border border-gray-200 rounded-lg p-6 my-6">
-          <h1 className="text-xl font-bold text-gray-700">Automation</h1>
-          <div>
-            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit">
-              <div>
-                <div className="bg-green-500 w-[20px] h-[20px] rounded-full font-semibold flex justify-center items-center"></div>
-              </div>
-              <div className="px-2">
-                <h3 className="text-gray-700 font-bold">APY 자동 최적화</h3>
-                <p className="text-gray-500">
-                  8% 이하로 떨어지면 자동으로 재배치
-                </p>{" "}
-              </div>
-              <div>
-                <div className="bg-green-500 w-[40px] h-[40px] rounded-full text-white font-semibold flex justify-center items-center">
-                  ON
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit">
-              <div>
-                <div className="bg-indigo-500 w-[20px] h-[20px] rounded-full font-semibold flex justify-center items-center"></div>
-              </div>
-              <div className="px-2">
-                <h3 className="text-gray-700 font-bold">
-                  NFT Price Notification
-                </h3>
-                <p className="text-gray-500">컬렉션 X 바닥가 1.2 ETH 이하</p>{" "}
-              </div>
-              <div>
-                <div className="bg-indigo-500 w-[40px] h-[40px] rounded-full text-white font-semibold flex justify-center items-center">
-                  ON
-                </div>
-              </div>
-            </div>
-          </div>
-          <Button className="mt-4" variant="outline">
-            + 새 자동화 규칙 추가
-          </Button>
         </section>
       </div>
-      <div className="flex gap-4 px-6">
-        <PersonaScores personaData={dummyPersonaData} />
-        <AIAssistant />
-        <section className="w-[30%] border border-gray-200 rounded-lg p-6 my-6">
-          <h1 className="text-xl font-bold text-gray-700">
-            유사 페르소나 커뮤니티
-          </h1>
-          <p className="text-gray-500 text-sm">당신과 비슷한 성향의 사용자들</p>
-          <div>
-            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200">
+      <div className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] border border-gray-200 rounded-lg m-6 p-6">
+        <h2 className="font-[family-name:var(--font-poppins)] text-xl font-bold text-gray-700 mb-4">
+          Persona Detailed Index
+        </h2>
+        <div className="flex gap-8">
+          <section className="w-1/2">
+            <div className="flex flex-col">
               <div>
-                <div className="bg-indigo-200 text-indigo-600 font-semibold w-[50px] h-[50px] rounded-full flex justify-center items-center">
-                  0x4B...
+                <h4 className="text-lg font-bold mt-4 mb-3 text-blue-500">
+                  Explorer ({data?.wallet.explorer_score} / 10)
+                </h4>
+                <Progress
+                  value={(data?.wallet?.explorer_score || 10) * 10}
+                  indicatorClassName="bg-blue-500"
+                  className="bg-blue-100"
+                />
+                <div className="flex flex-col gap-1 mt-2 text-sm">
+                  <p>
+                    Number of Chains: {data?.wallet.distinct_contract_count}
+                    &nbsp;(Top{" "}
+                    {100 -
+                      (data?.wallet.distinct_contract_count_percentile || 0)}
+                    %)
+                  </p>
                 </div>
               </div>
-              <div className="px-2">
-                <h3 className="text-gray-700 font-bold">Explorer + Smart</h3>
-                <p className="text-gray-500">Similarity: 92%</p>
-              </div>
+            </div>
+            <div className="flex flex-col">
               <div>
-                <Button className="rounded-full text-white" variant="purple">
-                  +
-                </Button>
+                <h4 className="text-lg font-bold mt-4 mb-3  text-rose-500">
+                  Diamond Hands ({data?.wallet.diamond_score} / 10)
+                </h4>
+                <Progress
+                  value={(data?.wallet?.diamond_score || 10) * 10}
+                  indicatorClassName="bg-rose-400"
+                  className="bg-rose-100"
+                />
+                <div className="flex flex-col gap-1 mt-2 text-sm">
+                  <p>
+                    Average Token Holding Period:{" "}
+                    {data?.wallet.avg_token_holding_period} days &nbsp;
+                    {`(Top ${
+                      100 -
+                      (data?.wallet.avg_token_holding_period_percentile || 0)
+                    }%)`}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
+          <section className="w-1/2">
+            <div className="flex flex-col">
+              <div>
+                <h4 className="text-lg font-bold mt-4 mb-3 text-yellow-500">
+                  Whale ({data?.wallet.whale_score} / 10)
+                </h4>
+                <Progress
+                  value={(data?.wallet?.whale_score || 10) * 10}
+                  indicatorClassName="bg-yellow-500"
+                  className="bg-yellow-100"
+                />
+                <div className="flex flex-col gap-1 mt-2 text-sm">
+                  <p>
+                    DEX Volume USD:{" "}
+                    {formattedVolume(data?.wallet?.dex_volume_usd || 0)}{" "}
+                    dollars&nbsp;
+                    {`(Top ${
+                      100 - (data?.wallet.dex_volume_usd_percentile || 0)
+                    }%)`}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <div>
+                <h4 className="text-lg font-bold mt-4 mb-3 text-pink-500">
+                  Degen ({data?.wallet.degen_score} / 10)
+                </h4>
+                <Progress
+                  value={(data?.wallet.degen_score || 10) * 10}
+                  indicatorClassName="bg-pink-500"
+                  className="bg-pink-100"
+                />
+                <div className="flex flex-col gap-1 mt-2 text-sm ">
+                  <p>
+                    Transaction Frequency: {data?.wallet.transaction_frequency}{" "}
+                    {`(Top ${
+                      100 - (data?.wallet.transaction_frequency_percentile || 0)
+                    }%)`}
+                  </p>
+                  <p>
+                    Diversity of DEX Platforms:{" "}
+                    {data?.wallet.dex_platform_diversity}&nbsp;
+                    {`(Top ${
+                      100 -
+                      (data?.wallet.dex_platform_diversity_percentile || 0)
+                    }%)`}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <div>
+        <PersonaHistory wallet={primaryWallet?.address} />
+      </div>
+    </div>
+  );
+}
 
-          <div>
-            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200">
-              <div>
-                <div className="bg-pink-200 text-pink-600 font-semibold w-[50px] h-[50px] rounded-full flex justify-center items-center">
-                  0x4B... // 12 13 14,
-                </div>
-              </div>
-              <div className="px-2">
-                <h3 className="text-gray-700 font-bold">Explorer + Devotee</h3>
-                <p className="text-gray-500">Similarity: 87%</p>
-              </div>
-              <div>
-                <Button className="rounded-full text-white" variant="purple">
-                  +
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200">
-              <div>
-                <div className="bg-green-200 text-green-600 font-semibold w-[50px] h-[50px] rounded-full flex justify-center items-center">
-                  0xF4...
-                </div>
-              </div>
-              <div className="px-2">
-                <h3 className="text-gray-700 font-bold">Explorer + Whale</h3>
-                <p className="text-gray-500">Similarity: 81%</p>
-              </div>
-              <div>
-                <Button className="rounded-full text-white" variant="purple">
-                  +
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+function Card({
+  data,
+  type,
+}: {
+  data: PersonaData | null;
+  type: "explorer_score" | "diamond_score" | "whale_score" | "degen_score";
+}) {
+  return (
+    <div
+      className={cn("rounded-lg w-[180px] h-[90px]", {
+        "bg-blue-100": type === "explorer_score",
+        "bg-rose-100": type === "diamond_score",
+        "bg-yellow-100": type === "whale_score",
+        "bg-pink-100": type === "degen_score",
+      })}
+    >
+      <div
+        className={cn("flex flex-col items-center justify-center h-full", {
+          "text-blue-500": type === "explorer_score",
+          "text-rose-500": type === "diamond_score",
+          "text-yellow-500": type === "whale_score",
+          "text-pink-500": type === "degen_score",
+        })}
+      >
+        <div className="text-lg font-semibold font-[family-name:var(--font-poppins)]">
+          {type
+            .replace(/_score$/, "")
+            .charAt(0)
+            .toUpperCase() + type.replace(/_score$/, "").slice(1)}
+        </div>
+        <div>{(data?.wallet[type] as number) || 0} / 10</div>
       </div>
     </div>
   );

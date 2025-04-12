@@ -1,12 +1,19 @@
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, MoveUp } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-
-export default function AIAssistant() {
+import { cn } from "@/lib/utils";
+export default function AIAssistant({ className }: { className?: string }) {
   return (
-    <section className="flex flex-col w-[40%] border border-gray-200 rounded-lg p-6 my-6">
+    <section
+      className={cn(
+        "bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] flex flex-col border border-gray-200 rounded-lg p-6",
+        className
+      )}
+    >
       <div className="bg-indigo-500 rounded-lg px-4 py-2">
-        <h1 className="text-xl font-bold text-white">AI Assistant</h1>
+        <h1 className="text-xl font-bold text-white font-[family-name:var(--font-poppins)]">
+          AI Assistant
+        </h1>
       </div>
 
       <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit mr-12">
@@ -19,10 +26,10 @@ export default function AIAssistant() {
         <p>네, 최근에 Arbitrum 체인에서 APY가 높은 프로토콜을 찾고 있어요.</p>
       </div>
       <div className="mt-auto">
-        <div className="mt-10 flex items-center">
+        <div className="mt-10 flex items-center gap-2">
           <Input className="w-full " placeholder="Ask me anything..." />
-          <Button variant="purple">
-            <ArrowUp />
+          <Button variant="purple" className="rounded-full w-8 h-8 p-2.5">
+            <MoveUp />
           </Button>
         </div>
       </div>

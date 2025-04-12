@@ -12,3 +12,10 @@ export const formatTimeAgo = (dateString: string): string => {
 export const formatDate = (dateString: string): string => {
   return dayjs(dateString).format("YYYY-MM-DD HH:mm:ss");
 };
+
+export const formattedVolume = (data: number) => {
+  return Number(data).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};

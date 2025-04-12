@@ -1,41 +1,153 @@
-import { Line } from "recharts";
+import { Line, XAxis, YAxis } from "recharts";
+
+const dummyData = [
+  {
+    id: 4097,
+    month: "January",
+    explorer_score: 6.7,
+    diamond_score: 7.3,
+    whale_score: 6.2,
+    degen_score: 5.9,
+    created_at: "2025-04-12 01:59:31",
+  },
+  {
+    id: 4098,
+    month: "February",
+    explorer_score: 6.7,
+    diamond_score: 7.3,
+    whale_score: 6.2,
+    degen_score: 5.9,
+    created_at: "2025-04-12 12:46:54",
+  },
+  {
+    id: 4099,
+    month: "March",
+    explorer_score: 6.7,
+    diamond_score: 7.3,
+    whale_score: 6.2,
+    degen_score: 5.9,
+    created_at: "2025-04-12 12:46:54",
+  },
+  {
+    id: 4100,
+    month: "April",
+    explorer_score: 6.7,
+    diamond_score: 7.3,
+    whale_score: 6.2,
+    degen_score: 5.9,
+    created_at: "2025-04-12 12:49:50",
+  },
+  {
+    id: 4101,
+    month: "May",
+    explorer_score: 6.7,
+    diamond_score: 7.3,
+    whale_score: 6.2,
+    degen_score: 5.9,
+    created_at: "2025-04-12 12:56:31",
+  },
+];
 
 import { CartesianGrid } from "recharts";
 
 import { LineChart } from "recharts";
 import { ChartConfig, ChartContainer } from "./ui/chart";
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+import { useEffect, useState } from "react";
+import { PersonaScoreItem } from "@/types";
+
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  explorer_score: {
+    label: "explorer_score",
     color: "#2563eb",
   },
-  mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
+  diamond_score: {
+    label: "diamond_score",
+    color: "#F43F5E",
+  },
+  whale_score: {
+    label: "whale_score",
+    color: "	#EAB308",
+  },
+  degen_score: {
+    label: "degen_score",
+    color: "#EC4899",
   },
 } satisfies ChartConfig;
-export default function PersonaHistory() {
+export default function PersonaHistory({
+  wallet,
+}: {
+  wallet: string | undefined;
+}) {
+  const [history, setHistory] = useState<PersonaScoreItem[]>(dummyData);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await fetch(`/api/persona-engine/logs/${wallet}`);
+  //     const data = await response.json();
+  //     setHistory(data);
+  //     if (!data) {
+  //       setHistory(dummyData);
+  //     }
+  //     console.log(data);
+  //   };
+  //   fetchData();
+  // }, []);
+
   return (
-    <section className="h-fit border border-gray-200 rounded-lg m-6 p-6">
-      <h2 className="text-xl font-bold text-gray-700">
+    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] h-fit border border-gray-200 rounded-lg m-6 p-6">
+      <h2 className="font-[family-name:var(--font-poppins)] text-xl font-bold text-gray-700">
         Persona History Changes
       </h2>
-      <p className="text-gray-500">
+      <p className="text-gray-500 font-[family-name:var(--font-poppins)]  ">
         How your persona has changed over recent 6 months.
       </p>
-      <ChartContainer config={chartConfig} className="w-full">
-        <LineChart data={chartData}>
+      <ChartContainer config={chartConfig} className="w-full h-[300px]  mt-6">
+        <LineChart
+          data={history}
+          margin={{
+            left: 12,
+            right: 12,
+          }}
+        >
           <CartesianGrid vertical={false} />
-          <Line dataKey="desktop" stroke="var(--color-desktop)" radius={4} />
-          <Line dataKey="mobile" stroke="var(--color-mobile)" radius={4} />
+          <XAxis
+            dataKey="month"
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            tickFormatter={(value) => value.slice(0, 3)}
+          />
+          <YAxis
+            tickCount={6}
+            height={100}
+            scale="linear"
+            type="number"
+            domain={[0, 10]}
+          />
+          <Line
+            dataKey="explorer_score"
+            stroke="#3B82F6"
+            strokeWidth={2}
+            radius={4}
+          />
+          <Line
+            dataKey="diamond_score"
+            stroke="#F43F5E"
+            strokeWidth={2}
+            radius={4}
+          />
+          <Line
+            dataKey="whale_score"
+            stroke="#EAB308"
+            strokeWidth={2}
+            radius={4}
+          />
+          <Line
+            dataKey="degen_score"
+            stroke="#EC4899"
+            strokeWidth={2}
+            radius={4}
+          />
+          {/* <Line dataKey="mobile" stroke="var(--color-mobile)" radius={4} /> */}
         </LineChart>
       </ChartContainer>
     </section>

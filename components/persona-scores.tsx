@@ -33,22 +33,26 @@ export default function PersonaScores({
   personaData: PersonaData;
 }) {
   return (
-    <section className="w-[30%] border border-gray-200 rounded-lg p-6 my-6">
-      <h1 className="text-xl font-bold text-gray-700">Persona Scores</h1>
-      <ChartContainer config={chartConfig} className="w-full">
-        <RadarChartRecharts data={transformToChartData(personaData)}>
-          <PolarGrid />
-          <PolarAngleAxis dataKey="subject" />
-          <PolarRadiusAxis domain={[0, 10]} />
-          <Radar
-            name="Score"
-            dataKey="value"
-            stroke="#8884d8"
-            fill="#8884d8"
-            fillOpacity={0.6}
-          />
-        </RadarChartRecharts>
-      </ChartContainer>
+    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[30%] border border-gray-200 rounded-lg p-6 my-6">
+      <h1 className="text-xl font-bold text-gray-700 mb-8 font-[family-name:var(--font-poppins)]">
+        Metrics
+      </h1>
+      <div className="mt-10">
+        <ChartContainer config={chartConfig} className="w-full font-boldr">
+          <RadarChartRecharts data={transformToChartData(personaData)}>
+            <PolarGrid />
+            <PolarAngleAxis dataKey="subject" />
+            <PolarRadiusAxis domain={[0, 10]} />
+            <Radar
+              name="Score"
+              dataKey="value"
+              stroke="#8884d8"
+              fill="#8884d8"
+              fillOpacity={0.6}
+            />
+          </RadarChartRecharts>
+        </ChartContainer>
+      </div>
     </section>
   );
 }

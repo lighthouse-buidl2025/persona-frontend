@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { UsePersonaDataReturn, PersonaData } from "@/types";
+import { dummyPersonaData } from "@/utils/dummyData";
 
 export function usePersonaData(
   address: string | undefined
@@ -65,7 +66,7 @@ export function usePersonaData(
   }, [address]);
 
   return {
-    data,
+    data: dummyPersonaData,
     isLoading,
     error,
     refetch: fetchData,
