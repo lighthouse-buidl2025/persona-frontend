@@ -1,10 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
-    // 백엔드 API로 요청 전달
     const response = await fetch(
-      `http://localhost:8000/api/eliza-agent/agents`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/eliza-agent/agents`,
       {
         method: "GET",
         headers: {
@@ -14,12 +13,11 @@ export async function GET(request: Request) {
     );
 
     const data = await response.json();
-
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    console.error("Persona data fetch error:", error);
+    console.error("Failed to fetch agents:", error);
     return NextResponse.json(
-      { success: false, error: "Internal server error" },
+      { success: false, error: "Internal Server Error" },
       { status: 500 }
     );
   }

@@ -76,7 +76,7 @@ export default function Header() {
   return (
     <header
       className={cn(
-        "font-semibold mt-4 text-white w-[1200px] mx-auto rounded-lg px-8 font-[family-name:var(--font-poppins)]",
+        "font-semibold text-white w-[1200px] mx-auto rounded-lg px-8 font-[family-name:var(--font-poppins)]",
         isTransparent
           ? "bg-transparent"
           : "bg-indigo-500 shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
@@ -87,7 +87,7 @@ export default function Header() {
           <div className="flex items-center">
             <Link
               href="/"
-              className={cn("text-2xl font-medium mr-8", {
+              className={cn("text-2xl py-4 font-medium mr-8", {
                 "text-indigo-500": isTransparent,
               })}
             >

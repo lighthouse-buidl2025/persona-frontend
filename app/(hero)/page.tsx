@@ -24,10 +24,10 @@ export default function Hero() {
       const data = await response.json();
 
       if (data.success) {
-        router.push("/persona");
+        router.push("/dashboard");
       } else {
         // User exists but not signed up
-        router.push("/persona");
+        router.push("/dashboard");
         toast.info("Please complete your profile to get started");
       }
     } catch (error) {

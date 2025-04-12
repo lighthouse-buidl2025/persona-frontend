@@ -66,7 +66,7 @@ export function usePersonaData(
   }, [address]);
 
   return {
-    data: dummyPersonaData,
+    data: dummyPersonaData, // TODO: fix this
     isLoading,
     error,
     refetch: fetchData,

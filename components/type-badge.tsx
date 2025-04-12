@@ -4,12 +4,16 @@ import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { dummyPersonaData } from "@/utils/dummyData";
+import { PersonaData } from "@/types";
 
-export default function TypeBadge() {
+export default function TypeBadge({
+  isLoading,
+  data,
+}: {
+  isLoading: boolean;
+  data: PersonaData | null;
+}) {
   const { primaryWallet } = useDynamicContext();
-  const { data: personaData, isLoading } = usePersonaData(
-    primaryWallet?.address
-  );
 
   return (
     <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[30%] flex flex-col items-center col-span-1 border border-gray-200 rounded-lg p-6">
@@ -17,19 +21,19 @@ export default function TypeBadge() {
         {primaryWallet?.address.slice(0, 4)}...
       </div>
       <h1 className="text-xl font-bold text-gray-700 mt-2 font-[family-name:var(--font-poppins)]">
-        {getSortedUserType(dummyPersonaData)[0]} Type
+        {getSortedUserType(data)[0]} Type
       </h1>
       {isLoading ? (
         <div className="flex flex-col items-center mt-2 text-sm">
           <p className="text-gray-500">Loading...</p>
         </div>
-      ) : dummyPersonaData ? (
+      ) : data ? (
         <div className="flex flex-col items-center mt-2 text-sm">
           <p className="text-gray-500">
-            Active Chains: {dummyPersonaData.wallet.distinct_contract_count}
+            Active Chains: {data.wallet.distinct_contract_count}
           </p>
           <p className="text-gray-500">
-            DEX Platforms: {dummyPersonaData.wallet.dex_platform_diversity}
+            DEX Platforms: {data.wallet.dex_platform_diversity}
           </p>
         </div>
       ) : null}

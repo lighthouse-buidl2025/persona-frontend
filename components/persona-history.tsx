@@ -1,45 +1,43 @@
 import { Line, XAxis, YAxis } from "recharts";
-
+import dayjs from "dayjs";
+type PersonaScoreItemWithMonth = PersonaScoreItem & {
+  month: string;
+};
 const dummyData = [
   {
     id: 4097,
-    month: "January",
     explorer_score: 6.7,
     diamond_score: 7.3,
     whale_score: 6.2,
     degen_score: 5.9,
-    created_at: "2025-04-12 01:59:31",
+    created_at: "2024-12-12 01:59:31",
   },
   {
     id: 4098,
-    month: "February",
     explorer_score: 6.7,
     diamond_score: 7.3,
     whale_score: 6.2,
     degen_score: 5.9,
-    created_at: "2025-04-12 12:46:54",
+    created_at: "2025-01-12 12:46:54",
   },
   {
     id: 4099,
-    month: "March",
     explorer_score: 6.7,
     diamond_score: 7.3,
     whale_score: 6.2,
     degen_score: 5.9,
-    created_at: "2025-04-12 12:46:54",
+    created_at: "2025-02-12 12:46:54",
   },
   {
     id: 4100,
-    month: "April",
     explorer_score: 6.7,
     diamond_score: 7.3,
     whale_score: 6.2,
     degen_score: 5.9,
-    created_at: "2025-04-12 12:49:50",
+    created_at: "2025-03-12 12:49:50",
   },
   {
     id: 4101,
-    month: "May",
     explorer_score: 6.7,
     diamond_score: 7.3,
     whale_score: 6.2,
@@ -78,19 +76,20 @@ export default function PersonaHistory({
 }: {
   wallet: string | undefined;
 }) {
-  const [history, setHistory] = useState<PersonaScoreItem[]>(dummyData);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch(`/api/persona-engine/logs/${wallet}`);
-  //     const data = await response.json();
-  //     setHistory(data);
-  //     if (!data) {
-  //       setHistory(dummyData);
-  //     }
-  //     console.log(data);
-  //   };
-  //   fetchData();
-  // }, []);
+  const [history, setHistory] = useState<PersonaScoreItemWithMonth[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      // TODO: remove this
+      // const response = await fetch(`/api/persona-engine/logs/${wallet}`);
+      // const data = await response.json();
+      const data: PersonaScoreItemWithMonth[] = dummyData.map((el) => ({
+        ...el,
+        month: dayjs(el.created_at).format("MMMM"),
+      }));
+      setHistory(data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] h-fit border border-gray-200 rounded-lg m-6 p-6">
@@ -147,7 +146,6 @@ export default function PersonaHistory({
             strokeWidth={2}
             radius={4}
           />
-          {/* <Line dataKey="mobile" stroke="var(--color-mobile)" radius={4} /> */}
         </LineChart>
       </ChartContainer>
     </section>
