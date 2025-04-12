@@ -32,6 +32,9 @@ export default function Automation() {
               tailored to your persona type.
             </p>
             <AutomationRuleCard></AutomationRuleCard>
+            <Button className="mt-4" variant="outline">
+            + Add New Automation Rule
+            </Button>
           </section>
         </div>
         <div>
