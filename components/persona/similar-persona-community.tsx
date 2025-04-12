@@ -80,7 +80,9 @@ export default function SimilarPersonaCommunity({
             <p className="text-gray-500 text-xs">Similarity: 92%</p>
           </div>
           <div>
-            <SquareArrowOutUpRight size={20} color="#5F27FF" />
+            <a href="https://t.me/PersonaChainAI/7" target="_blank">
+              <SquareArrowOutUpRight size={20} color="#5F27FF" />
+            </a>
           </div>
         </div>
       </div>
@@ -97,7 +99,9 @@ export default function SimilarPersonaCommunity({
             <p className="text-gray-500 text-xs">Similarity: 87%</p>
           </div>
           <div>
-            <SquareArrowOutUpRight size={20} color="#5F27FF" />
+            <a href="https://t.me/PersonaChainAI/2" target="_blank">
+              <SquareArrowOutUpRight size={20} color="#5F27FF" />
+            </a>
           </div>
         </div>
       </div>
@@ -113,7 +117,9 @@ export default function SimilarPersonaCommunity({
             <p className="text-gray-500 text-xs">Similarity: 81%</p>
           </div>
           <div>
-            <SquareArrowOutUpRight size={20} color="#5F27FF" />
+            <a href="https://t.me/PersonaChainAI/9" target="_blank">
+              <SquareArrowOutUpRight size={20} color="#5F27FF" />
+            </a>
           </div>
         </div>
       </div>
