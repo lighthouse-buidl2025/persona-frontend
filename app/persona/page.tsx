@@ -1,6 +1,6 @@
 "use client";
 import { Progress } from "@/components/ui/progress";
-
+import { cn } from "@/lib/utils";
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
@@ -47,7 +47,7 @@ export default function Persona() {
             <div key={el.type} className="flex flex-col">
               <div>
                 <h4
-                  className={c("text-lg font-bold mt-4 mb-3", {
+                  className={cn("text-lg font-bold mt-4 mb-3", {
                     "text-blue-500": el.color === "blue",
                     "text-yellow-500": el.color === "yellow",
                     "text-green-500": el.color === "green",
@@ -58,7 +58,7 @@ export default function Persona() {
                 </h4>
                 <Progress
                   value={87}
-                  indicatorClassName={c({
+                  indicatorClassName={cn({
                     "bg-blue-500": el.color === "blue",
                     "bg-yellow-500": el.color === "yellow",
                     "bg-green-500": el.color === "green",
@@ -105,8 +105,6 @@ const theme: {
   { type: "Degen", color: "pink" },
 ];
 
-import c from "classnames";
-
 function Card({
   type,
   color,
@@ -116,7 +114,7 @@ function Card({
 }) {
   return (
     <div
-      className={c("rounded-lg w-[180px] h-[90px]", {
+      className={cn("rounded-lg w-[180px] h-[90px]", {
         "bg-blue-100": color === "blue",
         "bg-green-100": color === "green",
         "bg-yellow-100": color === "yellow",
@@ -124,7 +122,7 @@ function Card({
       })}
     >
       <div
-        className={c("flex flex-col items-center justify-center h-full", {
+        className={cn("flex flex-col items-center justify-center h-full", {
           "text-blue-500": color === "blue",
           "text-green-500": color === "green",
           "text-yellow-500": color === "yellow",
