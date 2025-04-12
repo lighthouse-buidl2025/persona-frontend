@@ -1,15 +1,14 @@
 "use client";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-// import { usePersonaData } from "@/hooks/usePersonaData";
+import { usePersonaData } from "@/hooks/usePersonaData";
 import { formattedVolume, formatTimeAgo } from "@/utils/dateFormat";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
-import { useState } from "react";
-// import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 import PersonaHistory from "@/components/persona-history";
-// import { PersonaData, UsePersonaDataReturn } from "@/types";
-import { dummyPersonaData } from "@/utils/dummyData";
+import { PersonaData, UsePersonaDataReturn } from "@/types";
 
 export default function Persona() {
   const { primaryWallet } = useDynamicContext();
@@ -24,15 +23,15 @@ export default function Persona() {
       setSpinning("idle"); // 회전 멈춤
     }, 500); // 마지막 빠르게 한 바퀴 돌고 정지
   };
-  // const router = useRouter();
-  // const { data, isLoading, error, updateFetch }: UsePersonaDataReturn =
-  //   usePersonaData(primaryWallet?.address);
-  const data = dummyPersonaData;
-  // useEffect(() => {
-  //   if (primaryWallet?.address) {
-  //     router.push("/");
-  //   }
-  // }, [primaryWallet?.address]);
+  const router = useRouter();
+  const { data, isLoading, error, updateFetch }: UsePersonaDataReturn =
+    usePersonaData(primaryWallet?.address);
+
+  useEffect(() => {
+    if (primaryWallet?.address) {
+      router.push("/");
+    }
+  }, [primaryWallet?.address]);
 
   return (
     <div>
@@ -78,7 +77,7 @@ export default function Persona() {
                 "degen_score",
               ] as const
             ).map((el) => (
-              <Card type={el} key={el} />
+              <Card type={el} key={el} data={data} />
             ))}
           </div>
         </section>
@@ -95,7 +94,7 @@ export default function Persona() {
                   Explorer ({data?.wallet.explorer_score} / 10)
                 </h4>
                 <Progress
-                  value={data?.wallet.explorer_score * 10}
+                  value={(data?.wallet?.explorer_score || 10) * 10}
                   indicatorClassName="bg-blue-500"
                   className="bg-blue-100"
                 />
@@ -116,14 +115,14 @@ export default function Persona() {
                   Diamond Hands ({data?.wallet.diamond_score} / 10)
                 </h4>
                 <Progress
-                  value={data?.wallet.diamond_score * 10}
+                  value={(data?.wallet?.diamond_score || 10) * 10}
                   indicatorClassName="bg-rose-400"
                   className="bg-rose-100"
                 />
                 <div className="flex flex-col gap-1 mt-2 text-sm">
                   <p>
                     Average Token Holding Period:{" "}
-                    {data.wallet.avg_token_holding_period} days &nbsp;
+                    {data?.wallet.avg_token_holding_period} days &nbsp;
                     {`(Top ${
                       100 -
                       (data?.wallet.avg_token_holding_period_percentile || 0)
@@ -140,14 +139,15 @@ export default function Persona() {
                   Whale ({data?.wallet.whale_score} / 10)
                 </h4>
                 <Progress
-                  value={data?.wallet.whale_score * 10}
+                  value={(data?.wallet?.whale_score || 10) * 10}
                   indicatorClassName="bg-yellow-500"
                   className="bg-yellow-100"
                 />
                 <div className="flex flex-col gap-1 mt-2 text-sm">
                   <p>
                     DEX Volume USD:{" "}
-                    {formattedVolume(data.wallet.dex_volume_usd)} dollars&nbsp;
+                    {formattedVolume(data?.wallet?.dex_volume_usd || 0)}{" "}
+                    dollars&nbsp;
                     {`(Top ${
                       100 - (data?.wallet.dex_volume_usd_percentile || 0)
                     }%)`}
@@ -161,20 +161,20 @@ export default function Persona() {
                   Degen ({data?.wallet.degen_score} / 10)
                 </h4>
                 <Progress
-                  value={data?.wallet.degen_score * 10}
+                  value={(data?.wallet.degen_score || 10) * 10}
                   indicatorClassName="bg-pink-500"
                   className="bg-pink-100"
                 />
                 <div className="flex flex-col gap-1 mt-2 text-sm ">
                   <p>
-                    Transaction Frequency: {data.wallet.transaction_frequency}{" "}
+                    Transaction Frequency: {data?.wallet.transaction_frequency}{" "}
                     {`(Top ${
                       100 - (data?.wallet.transaction_frequency_percentile || 0)
                     }%)`}
                   </p>
                   <p>
                     Diversity of DEX Platforms:{" "}
-                    {data.wallet.dex_platform_diversity}&nbsp;
+                    {data?.wallet.dex_platform_diversity}&nbsp;
                     {`(Top ${
                       100 -
                       (data?.wallet.dex_platform_diversity_percentile || 0)
@@ -194,8 +194,10 @@ export default function Persona() {
 }
 
 function Card({
+  data,
   type,
 }: {
+  data: PersonaData | null;
   type: "explorer_score" | "diamond_score" | "whale_score" | "degen_score";
 }) {
   return (
@@ -221,7 +223,7 @@ function Card({
             .charAt(0)
             .toUpperCase() + type.replace(/_score$/, "").slice(1)}
         </div>
-        <div>{(dummyPersonaData?.wallet[type] as number) || 0} / 10</div>
+        <div>{(data?.wallet[type] as number) || 0} / 10</div>
       </div>
     </div>
   );
