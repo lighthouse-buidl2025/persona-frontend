@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Welcome to PersonaChain AI
 
-## Getting Started
+PersonaChain AI analyzes wallet activity using on-chain data and classifies wallets into behavioral personas. Based on these personas, the system suggests and automates personalized yield strategies with the help of AI agents.
 
-First, run the development server:
+✅
+On-chain transaction analysis & wallet persona classification
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+4 persona types: Explorer, Diamond Hands, Whale, Degen
+
+AI-based personalized strategy generation and automation
+
+Dynamic agent interaction for strategy execution via chat interface
+
+## ⚙️ Tech Stack
+
+### Framework & Runtime
+
+Next.js 15 (App Router) – Modular routing with layouts, server components, and API routes
+
+React 18 – Component-driven UI architecture
+
+Bun – Super-fast JavaScript runtime (used instead of Node.js)
+
+### Styling & UI
+
+Tailwind CSS – Utility-first CSS framework
+
+shadcn/ui – Accessible UI components built with Tailwind
+
+recharts – Data visualization (RadarChart, LineChart)
+
+### State & Logic
+
+Zustand – Lightweight global state management
+
+React Query (TanStack) – Server state caching and data fetching
+
+useMutation/useQuery hooks – For syncing and updating wallet persona data
+
+### AI Integration
+
+Eliza Agent API – LLM-based response agent
+
+Dynamic SDK – Wallet login, authentication, and account linking
+
+### Language
+
+TypeScript – Strong static typing
+
+### Project Structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+├── README.md
+├── app
+│ ├── (features)
+│ │ ├── automation
+│ │ ├── dashboard
+│ │ ├── layout.tsx
+│ │ ├── persona
+│ │ └── recommendations
+│ ├── (hero)
+│ │ ├── layout.tsx
+│ │ └── page.tsx
+│ ├── api
+│ │ ├── auth
+│ │ ├── eliza-agent
+│ │ ├── persona-engine
+│ │ └── user
+│ ├── favicon.ico
+│ ├── globals.css
+│ └── layout.tsx
+├── bun.lock
+├── components
+│ ├── ai-assistant.tsx
+│ ├── automation
+│ │ ├── automation-activity-log.tsx
+│ │ └── automation-rule-card.tsx
+│ ├── automation.tsx
+│ ├── common
+│ │ ├── explore-btn.tsx
+│ │ ├── protocols.tsx
+│ │ └── tag.tsx
+│ ├── email-modal.tsx
+│ ├── header.tsx
+│ ├── persona
+│ │ ├── persona-recommendations.tsx
+│ │ └── similar-persona-community.tsx
+│ ├── persona-history.tsx
+│ ├── persona-scores.tsx
+│ ├── provider.tsx
+│ ├── recommendation-history.tsx
+│ ├── type-badge.tsx
+│ └── ui
+│ ├── button.tsx
+│ ├── card.tsx
+│ ├── chart.tsx
+│ ├── dialog.tsx
+│ ├── input.tsx
+│ ├── label.tsx
+│ ├── progress.tsx
+│ ├── skeleton.tsx
+│ ├── sonner.tsx
+│ ├── table.tsx
+│ └── tooltip.tsx
+├── components.json
+├── eslint.config.mjs
+├── hooks
+│ ├── use-agents.ts
+│ ├── use-persona-group.ts
+│ └── usePersonaData.ts
+├── lib
+│ └── utils.ts
+├── next-env.d.ts
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── pnpm-lock.yaml
+├── postcss.config.mjs
+├── public # assets
+├── stores
+│ └── use-agent-store.ts
+├── tsconfig.json
+├── types
+│ └── index.ts
+├── utils
+└── yarn.lock
+```
