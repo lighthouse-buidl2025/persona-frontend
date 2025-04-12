@@ -1,4 +1,4 @@
-export interface PersonaData {
+interface PersonaData {
   wallet: {
     address: string;
     balance: number;
@@ -23,15 +23,12 @@ export interface PersonaData {
   };
 }
 
-export interface ChartData {
-  subject: string;
-  value: number;
-  fullMark: number;
-}
-
-export interface UsePersonaDataReturn {
+interface UsePersonaDataReturn {
   data: PersonaData | null;
   isLoading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
+  updateFetch: () => Promise<void>;
 }
+
+export type { PersonaData, UsePersonaDataReturn };

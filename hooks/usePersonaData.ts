@@ -9,6 +9,31 @@ export function usePersonaData(
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const updateData = async () => {
+    if (!address) return;
+
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const response = await fetch(`/api/persona-engine/update/${address}`);
+      const result = await response.json();
+
+      if (result.success) {
+        setData(result.data);
+      } else {
+        setError(result.error || "Failed to fetch persona data");
+        toast.error(result.error || "Failed to fetch persona data");
+      }
+    } catch (err) {
+      const errorMessage = "Error fetching persona data";
+      setError(errorMessage);
+      toast.error(errorMessage);
+      console.error(errorMessage, err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const fetchData = async () => {
     if (!address) return;
 
@@ -44,5 +69,6 @@ export function usePersonaData(
     isLoading,
     error,
     refetch: fetchData,
+    updateFetch: updateData,
   };
 }

@@ -138,3 +138,30 @@ body {
 .dynamic-shadow-dom {
   --dynamic-font-family-primary: "Poppins", sans-serif;
 }
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-fast {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin-slow 2s linear infinite;
+  }
+  .animate-spin-fast {
+    animation: spin-fast 0.4s linear;
+  }
+}
