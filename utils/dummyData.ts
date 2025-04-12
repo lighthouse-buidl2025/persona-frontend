@@ -1,4 +1,4 @@
-import { PersonaData } from "@/types";
+import { PersonaData, ContractItem } from "@/types";
 
 export const dummyPersonaData: PersonaData = {
   wallet: {
@@ -24,3 +24,44 @@ export const dummyPersonaData: PersonaData = {
     updated_at: "2025-04-12 01:07:16",
   },
 };
+
+export const dummyPersonaGroup: ContractItem[] = [
+  {
+    contract_address: "0x6a000f20005980200259b80c5102003040001068",
+    name: "paraswap",
+    category: "unknown",
+    description:
+      "Velora is the most comprehensive and flexible trading protocol for Decentralized Finance (DeFi). We use decentralized intents to provide advanced features such as limit orders, super hooks, and chain-abstracted swaps.",
+    frequency: 34,
+  },
+  {
+    contract_address: "0x111111125421ca6dc452d289314280a0f8842a65",
+    name: null,
+    category: null,
+    description: null,
+    frequency: 31,
+  },
+  {
+    contract_address: "0x0000000000a39bb272e79075ade125fd351887ac",
+    name: "blur",
+    category: "nft",
+    description: "The NFT marketplace for pro traders",
+    frequency: 31,
+  },
+  {
+    contract_address: "0xcf5540fffcdc3d510b18bfca6d2b9987b0772559",
+    name: "odos",
+    category: "unknown",
+    description:
+      "Odos is a cutting-edge platform that caters to both institutional and retail traders, empowering them with a competitive edge in swaps, using our comprehensive suite of tools to offer a wide array of functionalities to enhance trading strategies and optimize capital efficiency.",
+    frequency: 30,
+  },
+  {
+    contract_address: "0x66a9893cc07d91d95644aedd05d03f95e1dba8af",
+    name: "uniswap v4",
+    category: "unknown",
+    description:
+      "Uniswap v4 inherits all of the capital efficiency gains of Uniswap v3, but provides flexibility via hooks and gas optimizations across the entire lifecycle",
+    frequency: 29,
+  },
+];
