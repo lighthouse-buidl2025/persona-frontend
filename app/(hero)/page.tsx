@@ -1,6 +1,43 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Hero() {
+  const { primaryWallet, setShowAuthFlow } = useDynamicContext();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAnalyzeClick = async () => {
+    if (!primaryWallet?.address) {
+      setShowAuthFlow(true);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/user/${primaryWallet.address}`);
+      const data = await response.json();
+
+      if (data.success) {
+        router.push("/persona");
+      } else {
+        // User exists but not signed up
+        router.push("/persona");
+        toast.info("Please complete your profile to get started");
+      }
+    } catch (error) {
+      console.error("Error checking user:", error);
+      // toast.error("Error checking user status");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="mb-12">
       <div className="flex justify-center items-center flex-col font-[family-name:var(--font-poppins)]">
@@ -15,8 +52,14 @@ export default function Hero() {
           <br /> platform in the Web3 galaxy.
         </p>
 
-        <Button className="mt-10 bg-gradient-to-b from-[#5F27FF] to-[rgba(95,39,255,0.6)] text-white rounded-full">
-          Analyze Now
+        <Button
+          disabled={isLoading}
+          onClick={handleAnalyzeClick}
+          className="mt-10 bg-gradient-to-b from-[#5F27FF] to-[rgba(95,39,255,0.6)] text-white rounded-full"
+        >
+          <Link href="/persona">
+            {isLoading ? "Checking..." : "Analyze Now"}
+          </Link>
         </Button>
 
         <div className="mt-10 flex flex-col gap-8">
