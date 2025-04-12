@@ -39,7 +39,10 @@ export default function PersonaScores({
         Metrics
       </h1>
       <div className="mt-10">
-        <ChartContainer config={chartConfig} className="w-full font-boldr">
+        <ChartContainer
+          config={chartConfig}
+          className="w-full text-sm font-[family-name:var(--font-poppins)]"
+        >
           <RadarChartRecharts data={transformToChartData(personaData)}>
             <PolarGrid />
             <PolarAngleAxis dataKey="subject" />
