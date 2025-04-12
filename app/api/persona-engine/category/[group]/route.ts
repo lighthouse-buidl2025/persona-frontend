@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     const searchParams = url.searchParams;
     const limit = searchParams.get("limit") ?? "3";
 
-    // group 추출: pathname 예) /api/persona-engine/category/Whale_Degen
+    // group 추출: pathname 예) /api/persona-engine/category/Whale_Degen?limit=3&address=0x1234567890123456789012345678901234567890
     const segments = url.pathname.split("/");
     const group = segments[segments.length - 1];
 

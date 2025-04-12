@@ -1,3 +1,5 @@
+import { QueryObserverResult } from "@tanstack/react-query";
+
 interface PersonaData {
   wallet: {
     address: string;
@@ -27,7 +29,7 @@ interface UsePersonaDataReturn {
   data: PersonaData | null;
   isLoading: boolean;
   error: string | null;
-  refetch: () => Promise<void>;
+  refetch: () => Promise<QueryObserverResult<PersonaData, Error>>;
   updateFetch: () => Promise<void>;
 }
 
@@ -37,6 +39,7 @@ interface ContractItem {
   category: string | null;
   description: string | null;
   frequency: number;
+  created_at: string;
 }
 
 type CommunityContract = {
@@ -58,6 +61,16 @@ type Agent = {
   clients: any[]; // 필요하면 정확한 타입으로 변경 가능
 };
 
+enum Category {
+  DEXS = "dexs",
+  NFT = "nft",
+  LENDING = "lending",
+  RESTAKING = "restaking",
+  BRIDGING = "bridging",
+  unknown = "unknown",
+}
+
+export { Category };
 export type {
   PersonaData,
   UsePersonaDataReturn,
