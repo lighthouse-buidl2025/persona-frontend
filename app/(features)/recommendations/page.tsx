@@ -22,7 +22,7 @@ export default function Recommended() {
       </p>
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-2 grid-rows-2 gap-4">
-          <section className="px-6 bg-white  shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)]  rounded-lg">
+          <section className="px-6 bg-white  shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] rounded-lg">
             <div className="py-4">
               <div className="flex justify-between mb-4">
                 <h1 className="text-xl font-bold text-gray-700 font-[family-name:var(--font-poppins)]">

@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 
 export default function PersonaRecommendations() {
   return (
-    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[40%] border border-gray-200 rounded-lg p-6 my-6">
+    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[40%] border border-gray-200 rounded-lg p-6">
       <h1 className="font-[family-name:var(--font-poppins)] text-xl font-bold text-gray-700">
         Recommendations
       </h1>

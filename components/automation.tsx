@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 
 export default function Automation() {
   return (
-    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[30%] border border-gray-200 rounded-lg p-6 my-6">
+    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[30%] border border-gray-200 rounded-lg p-6">
       <h1 className="text-xl font-bold text-gray-700 font-[family-name:var(--font-poppins)]">
         Automation
       </h1>
