@@ -12,11 +12,7 @@ import { useState } from "react";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { toast } from "sonner";
 
-export default function EmailModal({
-  onOpenChange,
-}: {
-  onOpenChange: (open: boolean) => void;
-}) {
+export default function EmailModal() {
   const { primaryWallet } = useDynamicContext();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +37,6 @@ export default function EmailModal({
 
       if (data.success) {
         toast.success("Email updated successfully!");
-        onOpenChange(false);
       } else {
         toast.error("Failed to update email");
         console.error("Failed to update email:", data.error);

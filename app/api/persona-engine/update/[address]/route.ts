@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { address: string } }
-) {
+export async function GET(request: Request) {
   try {
-    const { address } = params;
+    const url = new URL(request.url);
+    const address = url.pathname.split("/").pop();
 
     if (!address) {
       return NextResponse.json(

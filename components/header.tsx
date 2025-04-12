@@ -22,7 +22,6 @@ export default function Header() {
   const pathname = usePathname();
   const isTransparent = pathname === "/";
   const { primaryWallet } = useDynamicContext();
-  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
 
@@ -174,16 +173,12 @@ export default function Header() {
                     <DialogTrigger asChild>
                       <Button
                         className="text-indigo-600 underline mt-1 text-center hover:cursor-pointer"
-                        onClick={() => setIsEmailModalOpen(true)}
                         disabled={isLoading}
                       >
                         Connect now
                       </Button>
                     </DialogTrigger>
-                    <EmailModal
-                      open={isEmailModalOpen}
-                      onOpenChange={setIsEmailModalOpen}
-                    />
+                    <EmailModal />
                   </Dialog>
                 </div>
               </div>
