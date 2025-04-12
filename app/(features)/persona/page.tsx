@@ -82,7 +82,7 @@ export default function Dashboard() {
       </div>
       <div className="flex gap-4 px-6">
         <PersonaScores personaData={dummyPersonaData} />
-        <AIAssistant />
+        <AIAssistant className="w-[40%] my-6" />
         <SimilarPersonaCommunity sortedUserType={sorted} />
       </div>
     </div>

@@ -12,7 +12,7 @@ export default function TypeBadge() {
   );
 
   return (
-    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[30%] flex flex-col items-center col-span-1 border border-gray-200 rounded-lg p-6 my-6">
+    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[30%] flex flex-col items-center col-span-1 border border-gray-200 rounded-lg p-6">
       <div className="flex justify-center items-center bg-indigo-200 text-indigo-600 font-bold w-[60px] h-[60px] rounded-[9999px] p-10">
         {primaryWallet?.address.slice(0, 4)}...
       </div>
