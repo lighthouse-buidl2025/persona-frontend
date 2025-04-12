@@ -35,5 +35,18 @@ type CommunityContract = {
   contract_address: string;
   frequency: number;
 };
+type PersonaScoreItem = {
+  id: number;
+  explorer_score: number;
+  diamond_score: number;
+  whale_score: number;
+  degen_score: number;
+  created_at: string; // 또는 Date 로 변환 가능
+};
 
-export type { PersonaData, UsePersonaDataReturn, CommunityContract };
+export type {
+  PersonaData,
+  UsePersonaDataReturn,
+  CommunityContract,
+  PersonaScoreItem,
+};
