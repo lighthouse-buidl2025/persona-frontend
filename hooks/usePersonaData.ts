@@ -1,75 +1,61 @@
-import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { UsePersonaDataReturn, PersonaData } from "@/types";
 import { dummyPersonaData } from "@/utils/dummyData";
+import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+const updateData = async (address: string) => {
+  if (!address) return;
+
+  const response = await fetch(`/api/persona-engine/update/${address}`);
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error || "Failed to fetch persona data");
+  }
+  return result.data;
+};
+const fetchData = async (address: string) => {
+  if (!address) return;
+
+  const response = await fetch(`/api/persona-engine/wallet/${address}`);
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error || "Failed to fetch persona data");
+  }
+  return result.data;
+};
 
 export function usePersonaData(
   address: string | undefined
 ): UsePersonaDataReturn {
-  const [data, setData] = useState<PersonaData | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const updateData = async () => {
-    if (!address) return;
+  const { data, isLoading, error, refetch } = useQuery<PersonaData, Error>({
+    queryKey: ["personaData", address],
+    queryFn: () => fetchData(address!),
+    enabled: !!address,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
+    retry: 1,
+  });
 
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      const response = await fetch(`/api/persona-engine/update/${address}`);
-      const result = await response.json();
-
-      if (result.success) {
-        setData(result.data);
-      } else {
-        setError(result.error || "Failed to fetch persona data");
-        toast.error(result.error || "Failed to fetch persona data");
-      }
-    } catch (err) {
-      const errorMessage = "Error fetching persona data";
-      setError(errorMessage);
-      toast.error(errorMessage);
-      console.error(errorMessage, err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const fetchData = async () => {
-    if (!address) return;
-
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      const response = await fetch(`/api/persona-engine/wallet/${address}`);
-      const result = await response.json();
-
-      if (result.success) {
-        setData(result.data);
-      } else {
-        setError(result.error || "Failed to fetch persona data");
-        toast.error(result.error || "Failed to fetch persona data");
-      }
-    } catch (err) {
-      const errorMessage = "Error fetching persona data";
-      setError(errorMessage);
-      toast.error(errorMessage);
-      console.error(errorMessage, err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [address]);
-
+  const { mutateAsync: updateFetch } = useMutation({
+    mutationFn: () => updateData(address!),
+    onSuccess: (updatedData) => {
+      queryClient.setQueryData(["personaData", address], updatedData);
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Update failed");
+    },
+  });
+  console.log({ dummyPersonaData });
   return {
-    data: dummyPersonaData, // TODO: fix this
+    data: dummyPersonaData, // TODO: remove dummy data
     isLoading,
-    error,
-    refetch: fetchData,
-    updateFetch: updateData,
+    error: error?.message ?? null,
+    refetch,
+    updateFetch,
   };
 }

@@ -1,50 +1,37 @@
+import { useQuery } from "@tanstack/react-query";
 import { ContractItem } from "@/types";
 import { dummyPersonaGroup } from "@/utils/dummyData";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-
-export default function usePersonaGroup({
-  address,
-  group,
-}: {
+type Props = {
   address?: string;
   group: string;
-}) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<ContractItem[] | null>([]);
+};
 
-  const fetchData = async () => {
-    if (!address) return;
+const fetchPersonaGroup = async ({
+  address,
+  group,
+}: Props): Promise<ContractItem[]> => {
+  if (!address) return [];
 
-    try {
-      setIsLoading(true);
-      setError(null);
+  const response = await fetch(
+    `/api/persona-engine/category/${group}?address=${address}`
+  );
+  const result = await response.json();
 
-      const response = await fetch(
-        `/api/persona-engine/category/${group}?address=${address}`
-      );
-      const result = await response.json();
+  if (!result.success) {
+    throw new Error(result.error || "Failed to fetch persona group data");
+  }
 
-      if (result.success) {
-        setData(result.data);
-      } else {
-        setError(result.error || "Failed to fetch persona data");
-        toast.error(result.error || "Failed to fetch persona data");
-      }
-    } catch (err) {
-      const errorMessage = "Error fetching persona data";
-      setError(errorMessage);
-      toast.error(errorMessage);
-      console.error(errorMessage, err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  return result.data.contracts;
+};
 
-  useEffect(() => {
-    fetchData();
-  }, [address]);
+export default function usePersonaGroup({ address, group }: Props) {
+  const { data, isLoading, error, refetch } = useQuery<ContractItem[], Error>({
+    queryKey: ["personaGroup", address, group],
+    queryFn: () => fetchPersonaGroup({ address, group }),
+    enabled: !!address && !!group,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10, // 10분 캐시
+  });
 
-  return { data: dummyPersonaGroup, isLoading, error }; // TODO: remove dummy data
+  return { data: dummyPersonaGroup, isLoading, error, refetch };
 }
