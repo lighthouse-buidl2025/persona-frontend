@@ -1,39 +1,45 @@
 "use client";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { usePersonaData } from "@/hooks/usePersonaData";
+// import { usePersonaData } from "@/hooks/usePersonaData";
+import { formatTimeAgo } from "@/utils/dateFormat";
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
-import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
-import { Line, LineChart, CartesianGrid } from "recharts";
+// import { type ChartConfig } from "@/components/ui/chart";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "#2563eb",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
-  },
-} satisfies ChartConfig;
+import { useState } from "react";
+// import { useRouter } from "next/navigation";
+import { RefreshCw } from "lucide-react";
+import PersonaHistory from "@/components/persona-history";
+// import { PersonaData, UsePersonaDataReturn } from "@/types";
+import { dummyPersonaData } from "@/utils/dummyData";
+// const chartConfig = {
+//   desktop: {
+//     label: "Desktop",
+//     color: "#2563eb",
+//   },
+//   mobile: {
+//     label: "Mobile",
+//     color: "#60a5fa",
+//   },
+// } satisfies ChartConfig;
 
 export default function Persona() {
   const { primaryWallet } = useDynamicContext();
-  const router = useRouter();
-  const { data, isLoading, error, refetch } = usePersonaData(
-    primaryWallet?.address
-  );
+  const [spinning, setSpinning] = useState<"idle" | "slow" | "fast">("idle");
 
+  const handleRefresh = async () => {
+    setSpinning("slow"); // 시작: 천천히 회전
+    // await updateFetch(); // 데이터 fetch
+    setSpinning("fast"); // 끝에 빠르게 돌기
+
+    setTimeout(() => {
+      setSpinning("idle"); // 회전 멈춤
+    }, 500); // 마지막 빠르게 한 바퀴 돌고 정지
+  };
+  // const router = useRouter();
+  // const { data, isLoading, error, updateFetch }: UsePersonaDataReturn =
+  //   usePersonaData(primaryWallet?.address);
+  const data = dummyPersonaData;
   // useEffect(() => {
   //   if (primaryWallet?.address) {
   //     router.push("/");
@@ -42,11 +48,37 @@ export default function Persona() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold p-6 text-gray-700">Persona Analysis</h1>
-      <p className="text-gray-500 px-6 mb-4">
-        On-chain Activity Analysis for{" "}
-        {`${primaryWallet?.address.slice(0, 4)}...`}
-      </p>
+      <div className="flex justify-between">
+        <div>
+          <h1 className="text-2xl font-bold p-6 text-gray-700">
+            Persona Analysis
+          </h1>
+          <p className="text-gray-500 px-6 mb-4">
+            On-chain Activity Analysis for{" "}
+            {`${primaryWallet?.address.slice(0, 4)}...`}
+          </p>
+        </div>
+        <div className="text-gray-500 p-6 text-sm">
+          <div className=" flex gap-2 items-center">
+            <RefreshCw
+              size={16}
+              onClick={handleRefresh}
+              className={`
+          transition-transform duration-700
+          ${
+            spinning === "slow"
+              ? "animate-spin-slow"
+              : spinning === "fast"
+              ? "animate-spin-fast"
+              : ""
+          }
+          cursor-pointer
+        `}
+            />
+            {`Last Updated at ${formatTimeAgo("2025-04-12 01:07:16")}`}
+          </div>
+        </div>
+      </div>
       <div className="">
         <section className="px-6">
           <div className="rounded-lg flex justify-around bg-slate-100 border border-gray-200 p-4">
@@ -62,81 +94,105 @@ export default function Persona() {
         </h2>
         <div className="flex gap-8">
           <section className="w-1/2">
-            {theme.slice(0, 2).map((el) => (
-              <div key={el.type} className="flex flex-col">
-                <div>
-                  <h4
-                    className={cn("text-lg font-bold mt-4 mb-3", {
-                      "text-blue-500": el.color === "blue",
-                      "text-yellow-500": el.color === "yellow",
-                      "text-green-500": el.color === "green",
-                      "text-pink-500": el.color === "pink",
-                    })}
-                  >
-                    {el.type} (8.7 / 10)
-                  </h4>
-                  <Progress
-                    value={87}
-                    indicatorClassName={cn({
-                      "bg-blue-500": el.color === "blue",
-                      "bg-yellow-500": el.color === "yellow",
-                      "bg-green-500": el.color === "green",
-                      "bg-pink-500": el.color === "pink",
-                    })}
-                  />
-                  <div className="flex flex-col gap-1 mt-2 text-sm">
-                    <p>사용 체인 수: 6개 (상위 10%)</p>
-                    <p>사용한 프로토콜 수: 12개 (상위 8%)</p>
-                    <p>새로운 프로토콜 탐색 빈도: 매우 높음</p>
-                  </div>
+            <div className="flex flex-col">
+              <div>
+                <h4 className="text-lg font-bold mt-4 mb-3 text-blue-500">
+                  Explorer ({data?.wallet.explorer_score} / 10)
+                </h4>
+                <Progress
+                  value={data?.wallet.explorer_score * 10}
+                  indicatorClassName="bg-blue-500"
+                  className="bg-blue-100"
+                />
+                <div className="flex flex-col gap-1 mt-2 text-sm">
+                  <p>
+                    Number of chains: {data?.wallet.distinct_contract_count}개
+                    (Top{" "}
+                    {100 -
+                      (data?.wallet.distinct_contract_count_percentile || 0)}
+                    %)
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
+            <div className="flex flex-col">
+              <div>
+                <h4 className="text-lg font-bold mt-4 mb-3  text-rose-500">
+                  Diamond Hands ({data?.wallet.diamond_score} / 10)
+                </h4>
+                <Progress
+                  value={data?.wallet.diamond_score * 10}
+                  indicatorClassName="bg-rose-400"
+                  className="bg-rose-100"
+                />
+                <div className="flex flex-col gap-1 mt-2 text-sm">
+                  <p>
+                    Average Token Holding Period: {data.wallet.dex_volume_usd}{" "}
+                    dollars (Top {1 - data.wallet.dex_volume_usd_percentile}%)
+                  </p>
+                </div>
+              </div>
+            </div>
           </section>
           <section className="w-1/2">
-            {theme.slice(2).map((el) => (
-              <div key={el.type} className="flex flex-col">
-                <div>
-                  <h4
-                    className={cn("text-lg font-bold mt-4 mb-3", {
-                      "text-blue-500": el.color === "blue",
-                      "text-yellow-500": el.color === "yellow",
-                      "text-green-500": el.color === "green",
-                      "text-pink-500": el.color === "pink",
-                    })}
-                  >
-                    {el.type} (8.7 / 10)
-                  </h4>
-                  <Progress
-                    value={87}
-                    indicatorClassName={cn({
-                      "bg-blue-500": el.color === "blue",
-                      "bg-yellow-500": el.color === "yellow",
-                      "bg-green-500": el.color === "green",
-                      "bg-pink-500": el.color === "pink",
-                    })}
-                  />
-                  <div className="flex flex-col gap-1 mt-2 text-sm">
-                    <p>사용 체인 수: 6개 (상위 10%)</p>
-                    <p>사용한 프로토콜 수: 12개 (상위 8%)</p>
-                    <p>새로운 프로토콜 탐색 빈도: 매우 높음</p>
-                  </div>
+            <div className="flex flex-col">
+              <div>
+                <h4 className="text-lg font-bold mt-4 mb-3 text-yellow-500">
+                  Whale ({data?.wallet.diamond_score} / 10)
+                </h4>
+                <Progress
+                  value={data?.wallet.diamond_score * 10}
+                  indicatorClassName="bg-yellow-500"
+                  className="bg-yellow-100"
+                />
+                <div className="flex flex-col gap-1 mt-2 text-sm">
+                  <p>
+                    Average Token Holding Period:{" "}
+                    {data.wallet.avg_token_holding_period} days (상위{" "}
+                    {1 - data.wallet.avg_token_holding_period_percentile}%)
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
+            <div className="flex flex-col">
+              <div>
+                <h4 className="text-lg font-bold mt-4 mb-3 text-pink-500">
+                  Degen ({data?.wallet.degen_score} / 10)
+                </h4>
+                <Progress
+                  value={data?.wallet.degen_score * 10}
+                  indicatorClassName="bg-pink-500"
+                  className="bg-pink-100"
+                />
+                <div className="flex flex-col gap-1 mt-2 text-sm text-pink-500">
+                  <p>
+                    Transaction Frequency: {data.wallet.transaction_frequency}{" "}
+                    (Top {1 - data.wallet.transaction_frequency_percentile}%)
+                  </p>
+                  <p>
+                    Diversity of DEX Platforms:{" "}
+                    {data.wallet.dex_platform_diversity} (Top{" "}
+                    {1 - data.wallet.dex_platform_diversity_percentile}%)
+                  </p>
+                </div>
+              </div>
+            </div>
           </section>
         </div>
+      </div>
+      <div>
+        <PersonaHistory />
       </div>
     </div>
   );
 }
 
 const theme: {
-  type: "Explorer" | "Smart" | "Whale" | "Degen";
+  type: "Explorer" | "Diamond Hands" | "Whale" | "Degen";
   color: string;
 }[] = [
   { type: "Explorer", color: "blue" },
-  { type: "Smart", color: "green" },
+  { type: "Diamond Hands", color: "rose" },
   { type: "Whale", color: "yellow" },
   { type: "Degen", color: "pink" },
 ];
@@ -145,14 +201,14 @@ function Card({
   type,
   color,
 }: {
-  type: "Explorer" | "Smart" | "Whale" | "Degen";
+  type: "Explorer" | "Diamond Hands" | "Whale" | "Degen";
   color: string;
 }) {
   return (
     <div
       className={cn("rounded-lg w-[180px] h-[90px]", {
         "bg-blue-100": color === "blue",
-        "bg-green-100": color === "green",
+        "bg-rose-100": color === "rose",
         "bg-yellow-100": color === "yellow",
         "bg-pink-100": color === "pink",
       })}
@@ -160,7 +216,7 @@ function Card({
       <div
         className={cn("flex flex-col items-center justify-center h-full", {
           "text-blue-500": color === "blue",
-          "text-green-500": color === "green",
+          "text-rose-500": color === "rose",
           "text-yellow-500": color === "yellow",
           "text-pink-500": color === "pink",
         })}

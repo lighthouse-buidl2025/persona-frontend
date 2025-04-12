@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Toaster } from "@/components/ui/sonner";
 import {
   DialogContent,
   DialogDescription,
@@ -14,10 +13,8 @@ import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { toast } from "sonner";
 
 export default function EmailModal({
-  open,
   onOpenChange,
 }: {
-  open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
   const { primaryWallet } = useDynamicContext();

@@ -1,10 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { dummyPersonaData } from "@/utils/dummyData";
-import RadarChart from "@/components/radar-chart";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import AIAssistant from "@/components/ai-assistant";
+import PersonaScores from "@/components/persona-scores";
 
 interface PersonaData {
   wallet: {
@@ -63,30 +64,30 @@ export default function Dashboard() {
     fetchPersonaData();
   }, [primaryWallet?.address]);
 
-  const chartData = personaData
-    ? [
-        {
-          subject: "Explorer",
-          value: personaData.wallet.explorer_score,
-          fullMark: 10,
-        },
-        {
-          subject: "Diamond",
-          value: personaData.wallet.diamond_score,
-          fullMark: 10,
-        },
-        {
-          subject: "Whale",
-          value: personaData.wallet.whale_score,
-          fullMark: 10,
-        },
-        {
-          subject: "Degen",
-          value: personaData.wallet.degen_score,
-          fullMark: 10,
-        },
-      ]
-    : [];
+  // const chartData = personaData
+  //   ? [
+  //       {
+  //         subject: "Explorer",
+  //         value: personaData.wallet.explorer_score,
+  //         fullMark: 10,
+  //       },
+  //       {
+  //         subject: "Diamond",
+  //         value: personaData.wallet.diamond_score,
+  //         fullMark: 10,
+  //       },
+  //       {
+  //         subject: "Whale",
+  //         value: personaData.wallet.whale_score,
+  //         fullMark: 10,
+  //       },
+  //       {
+  //         subject: "Degen",
+  //         value: personaData.wallet.degen_score,
+  //         fullMark: 10,
+  //       },
+  //     ]
+  //   : [];
 
   return (
     <div>
@@ -119,10 +120,157 @@ export default function Dashboard() {
             Details
           </Button>
         </section>
-
         <section className="w-[40%] border border-gray-200 rounded-lg p-6 my-6">
-          <h1 className="text-xl font-bold text-gray-700">Persona Scores</h1>
-          <RadarChart personaData={dummyPersonaData} />
+          <h1 className="text-xl font-bold text-gray-700">
+            Curation for Explorer Type
+          </h1>
+          <p className="text-gray-500">
+            Perfect Opportunities for Your Persona
+          </p>{" "}
+          <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit">
+            <div>
+              <div className="bg-purple-200 w-[50px] h-[50px] rounded text-purple-500 font-semibold flex justify-center items-center">
+                DEX
+              </div>
+            </div>
+            <div className="px-2">
+              <h3 className="text-gray-700 font-bold">
+                Arbitrum 신규 DEX Protocol
+              </h3>{" "}
+              <p className="text-gray-500">Explorer 유형 사용자 89% 참여</p>{" "}
+              <p className="text-green-500 text-xs font-semibold">
+                예상 APY: 12.4%
+              </p>
+            </div>
+            <Button className="mt-4" variant="purple">
+              Explore
+            </Button>
+          </div>
+          <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit">
+            <div>
+              <div className="bg-pink-200 w-[50px] h-[50px] rounded text-pink-500 font-semibold flex justify-center items-center">
+                NFT
+              </div>
+            </div>
+            <div className="px-2">
+              <h3 className="text-gray-700 font-bold">신규 NFT Project X</h3>{" "}
+              <p className="text-gray-500">Explorer 유형 사용자 89% 참여</p>{" "}
+              <p className="text-green-500 text-xs font-semibold">
+                예상 APY: 12.4%
+              </p>
+            </div>
+            <Button className="mt-4" variant="purple">
+              Explore
+            </Button>
+          </div>
+        </section>
+
+        <section className="w-[30%] border border-gray-200 rounded-lg p-6 my-6">
+          <h1 className="text-xl font-bold text-gray-700">Automation</h1>
+          <div>
+            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit">
+              <div>
+                <div className="bg-green-500 w-[20px] h-[20px] rounded-full font-semibold flex justify-center items-center"></div>
+              </div>
+              <div className="px-2">
+                <h3 className="text-gray-700 font-bold">APY 자동 최적화</h3>
+                <p className="text-gray-500">
+                  8% 이하로 떨어지면 자동으로 재배치
+                </p>{" "}
+              </div>
+              <div>
+                <div className="bg-green-500 w-[40px] h-[40px] rounded-full text-white font-semibold flex justify-center items-center">
+                  ON
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit">
+              <div>
+                <div className="bg-indigo-500 w-[20px] h-[20px] rounded-full font-semibold flex justify-center items-center"></div>
+              </div>
+              <div className="px-2">
+                <h3 className="text-gray-700 font-bold">
+                  NFT Price Notification
+                </h3>
+                <p className="text-gray-500">컬렉션 X 바닥가 1.2 ETH 이하</p>{" "}
+              </div>
+              <div>
+                <div className="bg-indigo-500 w-[40px] h-[40px] rounded-full text-white font-semibold flex justify-center items-center">
+                  ON
+                </div>
+              </div>
+            </div>
+          </div>
+          <Button className="mt-4" variant="outline">
+            + 새 자동화 규칙 추가
+          </Button>
+        </section>
+      </div>
+      <div className="flex gap-4 px-6">
+        <PersonaScores personaData={dummyPersonaData} />
+        <AIAssistant />
+        <section className="w-[30%] border border-gray-200 rounded-lg p-6 my-6">
+          <h1 className="text-xl font-bold text-gray-700">
+            유사 페르소나 커뮤니티
+          </h1>
+          <p className="text-gray-500 text-sm">당신과 비슷한 성향의 사용자들</p>
+          <div>
+            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200">
+              <div>
+                <div className="bg-indigo-200 text-indigo-600 font-semibold w-[50px] h-[50px] rounded-full flex justify-center items-center">
+                  0x4B...
+                </div>
+              </div>
+              <div className="px-2">
+                <h3 className="text-gray-700 font-bold">Explorer + Smart</h3>
+                <p className="text-gray-500">Similarity: 92%</p>
+              </div>
+              <div>
+                <Button className="rounded-full text-white" variant="purple">
+                  +
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200">
+              <div>
+                <div className="bg-pink-200 text-pink-600 font-semibold w-[50px] h-[50px] rounded-full flex justify-center items-center">
+                  0x4B... // 12 13 14,
+                </div>
+              </div>
+              <div className="px-2">
+                <h3 className="text-gray-700 font-bold">Explorer + Devotee</h3>
+                <p className="text-gray-500">Similarity: 87%</p>
+              </div>
+              <div>
+                <Button className="rounded-full text-white" variant="purple">
+                  +
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200">
+              <div>
+                <div className="bg-green-200 text-green-600 font-semibold w-[50px] h-[50px] rounded-full flex justify-center items-center">
+                  0xF4...
+                </div>
+              </div>
+              <div className="px-2">
+                <h3 className="text-gray-700 font-bold">Explorer + Whale</h3>
+                <p className="text-gray-500">Similarity: 81%</p>
+              </div>
+              <div>
+                <Button className="rounded-full text-white" variant="purple">
+                  +
+                </Button>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
     </div>
