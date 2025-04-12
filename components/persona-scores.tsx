@@ -30,15 +30,19 @@ const chartConfig = {
 export default function PersonaScores({
   personaData,
 }: {
-  personaData: PersonaData;
+  personaData: PersonaData | null;
 }) {
+  if (!personaData) return null;
   return (
     <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] w-[30%] border border-gray-200 rounded-lg p-6 my-6">
       <h1 className="text-xl font-bold text-gray-700 mb-8 font-[family-name:var(--font-poppins)]">
         Metrics
       </h1>
       <div className="mt-10">
-        <ChartContainer config={chartConfig} className="w-full font-boldr">
+        <ChartContainer
+          config={chartConfig}
+          className="w-full text-sm font-[family-name:var(--font-poppins)]"
+        >
           <RadarChartRecharts data={transformToChartData(personaData)}>
             <PolarGrid />
             <PolarAngleAxis dataKey="subject" />

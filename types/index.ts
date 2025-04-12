@@ -31,6 +31,14 @@ interface UsePersonaDataReturn {
   updateFetch: () => Promise<void>;
 }
 
+interface ContractItem {
+  contract_address: string;
+  name: string | null;
+  category: string | null;
+  description: string | null;
+  frequency: number;
+}
+
 type CommunityContract = {
   contract_address: string;
   frequency: number;
@@ -44,9 +52,17 @@ type PersonaScoreItem = {
   created_at: string; // 또는 Date 로 변환 가능
 };
 
+type Agent = {
+  id: string;
+  name: string;
+  clients: any[]; // 필요하면 정확한 타입으로 변경 가능
+};
+
 export type {
   PersonaData,
   UsePersonaDataReturn,
   CommunityContract,
+  ContractItem,
   PersonaScoreItem,
+  Agent,
 };

@@ -6,7 +6,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-[#F5F5F5]">
+    <div className="bg-[#F5F5F5] pt-4">
       <Header />
       <div className="flex w-[1200px] mx-auto py-8">
         <div className="w-full h-full font-[family-name:var(--font-noto-sans)]">

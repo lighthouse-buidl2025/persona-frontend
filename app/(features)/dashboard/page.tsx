@@ -28,7 +28,7 @@ export default function Persona() {
     usePersonaData(primaryWallet?.address);
 
   useEffect(() => {
-    if (primaryWallet?.address) {
+    if (!primaryWallet?.address) {
       router.push("/");
     }
   }, [primaryWallet?.address]);
@@ -37,15 +37,15 @@ export default function Persona() {
     <div>
       <div className="flex justify-between">
         <div>
-          <h1 className="font-[family-name:var(--font-poppins)] text-2xl font-bold p-6 text-gray-700">
+          <h1 className="font-[family-name:var(--font-poppins)] text-2xl font-bold px-6 text-gray-700">
             Persona Analysis
           </h1>
-          <p className="text-gray-500 px-6 mb-4">
+          <p className="text-gray-500 px-6 my-2 font-[family-name:var(--font-poppins)]">
             On-chain Activity Analysis of{" "}
             {`${primaryWallet?.address.slice(0, 4)}...`}
           </p>
         </div>
-        <div className="text-gray-500 p-6 text-sm">
+        <div className="text-gray-500 p-6 text-sm font-[family-name:var(--font-poppins)]">
           <div className=" flex gap-2 items-center">
             <RefreshCw
               size={16}

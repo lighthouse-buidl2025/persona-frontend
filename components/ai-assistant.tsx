@@ -1,8 +1,39 @@
-import { ArrowUp, MoveUp } from "lucide-react";
+import { MoveUp } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { dummyAgents } from "@/utils/dummyData";
+import useAgents from "@/hooks/use-agents";
+import { useAgentStore } from "@/stores/use-agent-store";
+import { toast } from "sonner";
+
 export default function AIAssistant({ className }: { className?: string }) {
+  const [message, setMessage] = useState("");
+  const { data: agents, isLoading, error } = useAgents();
+  const { selectedAgentId, setAgentId } = useAgentStore();
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  const submit = async () => {
+    if (!selectedAgentId) {
+      toast.error("Agent not selected");
+      return;
+    }
+
+    console.log(message);
+
+    const response = await fetch(
+      `/api/eliza-agent/${selectedAgentId}/message`,
+      {
+        method: "POST",
+        body: JSON.stringify({ message }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  };
+
   return (
     <section
       className={cn(
@@ -18,8 +49,8 @@ export default function AIAssistant({ className }: { className?: string }) {
 
       <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-gray-100 rounded-xl p-4 border border-gray-200 w-fit mr-12">
         <p>
-          안녕하세요! 당신의 Explorer 페르소나에 맞는 새로운 DeFi 기회를
-          찾아볼까요?
+          Hello! Shall we find new DeFi opportunities that match your Explorer
+          persona?
         </p>
       </div>
       <div className="flex gap-y-4 gap-x-2 items-center mt-2 text-sm bg-indigo-100 rounded-xl p-4 border border-indigo-200 w-fit ml-12">
@@ -27,8 +58,17 @@ export default function AIAssistant({ className }: { className?: string }) {
       </div>
       <div className="mt-auto">
         <div className="mt-10 flex items-center gap-2">
-          <Input className="w-full " placeholder="Ask me anything..." />
-          <Button variant="purple" className="rounded-full w-8 h-8 p-2.5">
+          <Input
+            className="w-full"
+            value={message}
+            placeholder="Enter message..."
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <Button
+            variant="purple"
+            className="rounded-full w-8 h-8 p-2.5"
+            onClick={submit}
+          >
             <MoveUp />
           </Button>
         </div>
