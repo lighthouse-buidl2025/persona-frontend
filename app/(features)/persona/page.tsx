@@ -2,7 +2,7 @@
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 // import { usePersonaData } from "@/hooks/usePersonaData";
-import { formatTimeAgo } from "@/utils/dateFormat";
+import { formattedVolume, formatTimeAgo } from "@/utils/dateFormat";
 
 // import { type ChartConfig } from "@/components/ui/chart";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
@@ -54,7 +54,7 @@ export default function Persona() {
             Persona Analysis
           </h1>
           <p className="text-gray-500 px-6 mb-4">
-            On-chain Activity Analysis for{" "}
+            On-chain Activity Analysis of{" "}
             {`${primaryWallet?.address.slice(0, 4)}...`}
           </p>
         </div>
@@ -106,8 +106,8 @@ export default function Persona() {
                 />
                 <div className="flex flex-col gap-1 mt-2 text-sm">
                   <p>
-                    Number of chains: {data?.wallet.distinct_contract_count}개
-                    (Top{" "}
+                    Number of Chains: {data?.wallet.distinct_contract_count}
+                    &nbsp;(Top{" "}
                     {100 -
                       (data?.wallet.distinct_contract_count_percentile || 0)}
                     %)
@@ -127,8 +127,12 @@ export default function Persona() {
                 />
                 <div className="flex flex-col gap-1 mt-2 text-sm">
                   <p>
-                    Average Token Holding Period: {data.wallet.dex_volume_usd}{" "}
-                    dollars (Top {1 - data.wallet.dex_volume_usd_percentile}%)
+                    Average Token Holding Period:{" "}
+                    {data.wallet.avg_token_holding_period} days &nbsp;
+                    {`(Top ${
+                      100 -
+                      (data?.wallet.avg_token_holding_period_percentile || 0)
+                    }%)`}
                   </p>
                 </div>
               </div>
@@ -138,18 +142,20 @@ export default function Persona() {
             <div className="flex flex-col">
               <div>
                 <h4 className="text-lg font-bold mt-4 mb-3 text-yellow-500">
-                  Whale ({data?.wallet.diamond_score} / 10)
+                  Whale ({data?.wallet.whale_score} / 10)
                 </h4>
                 <Progress
-                  value={data?.wallet.diamond_score * 10}
+                  value={data?.wallet.whale_score * 10}
                   indicatorClassName="bg-yellow-500"
                   className="bg-yellow-100"
                 />
                 <div className="flex flex-col gap-1 mt-2 text-sm">
                   <p>
-                    Average Token Holding Period:{" "}
-                    {data.wallet.avg_token_holding_period} days (상위{" "}
-                    {1 - data.wallet.avg_token_holding_period_percentile}%)
+                    DEX Volume USD:{" "}
+                    {formattedVolume(data.wallet.dex_volume_usd)} dollars&nbsp;
+                    {`(Top ${
+                      100 - (data?.wallet.dex_volume_usd_percentile || 0)
+                    }%)`}
                   </p>
                 </div>
               </div>
@@ -164,15 +170,20 @@ export default function Persona() {
                   indicatorClassName="bg-pink-500"
                   className="bg-pink-100"
                 />
-                <div className="flex flex-col gap-1 mt-2 text-sm text-pink-500">
+                <div className="flex flex-col gap-1 mt-2 text-sm ">
                   <p>
                     Transaction Frequency: {data.wallet.transaction_frequency}{" "}
-                    (Top {1 - data.wallet.transaction_frequency_percentile}%)
+                    {`(Top ${
+                      100 - (data?.wallet.transaction_frequency_percentile || 0)
+                    }%)`}
                   </p>
                   <p>
                     Diversity of DEX Platforms:{" "}
-                    {data.wallet.dex_platform_diversity} (Top{" "}
-                    {1 - data.wallet.dex_platform_diversity_percentile}%)
+                    {data.wallet.dex_platform_diversity}&nbsp;
+                    {`(Top ${
+                      100 -
+                      (data?.wallet.dex_platform_diversity_percentile || 0)
+                    }%)`}
                   </p>
                 </div>
               </div>

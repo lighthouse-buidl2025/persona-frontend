@@ -31,4 +31,9 @@ interface UsePersonaDataReturn {
   updateFetch: () => Promise<void>;
 }
 
-export type { PersonaData, UsePersonaDataReturn };
+type CommunityContract = {
+  contract_address: string;
+  frequency: number;
+};
+
+export type { PersonaData, UsePersonaDataReturn, CommunityContract };

@@ -24,7 +24,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 export default function PersonaHistory() {
   return (
-    <section className="h-fit border border-gray-200 rounded-lg m-6 p-6">
+    <section className="bg-white shadow-[0px_4px_8px_2px_rgba(0,0,0,0.25)] h-fit border border-gray-200 rounded-lg m-6 p-6">
       <h2 className="text-xl font-bold text-gray-700">
         Persona History Changes
       </h2>
