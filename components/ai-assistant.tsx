@@ -26,7 +26,7 @@ export default function AIAssistant({ className }: { className?: string }) {
 
   useEffect(() => {
     // 에이전트가 로드되면 첫 번째 에이전트를 자동 선택
-    if (agents && agents.length > 0 && !selectedAgentId) {
+    if (agents && agents?.length > 0 && !selectedAgentId) {
       const firstAgentId = agents[0].id;
       console.log(firstAgentId);
       setAgentId(firstAgentId);
