@@ -1,9 +1,7 @@
-import { usePersonaData } from "@/hooks/usePersonaData";
 import { getSortedUserType } from "@/utils";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { dummyPersonaData } from "@/utils/dummyData";
 import { PersonaData } from "@/types";
 
 export default function TypeBadge({

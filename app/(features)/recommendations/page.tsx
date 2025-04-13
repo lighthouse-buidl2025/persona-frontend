@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import AIAssistant from "@/components/ai-assistant";
@@ -16,7 +15,7 @@ export default function Recommended() {
   const { primaryWallet } = useDynamicContext();
   const address = primaryWallet?.address;
   const { data } = usePersonaData(address);
-  const sorted = useMemo(() => getSortedUserType(data), []);
+  const sorted = useMemo(() => getSortedUserType(data), [data]);
   const { data: groupData } = usePersonaGroup({
     address,
     group: sorted.slice(0, 2).join("_"),

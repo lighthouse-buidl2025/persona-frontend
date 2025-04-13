@@ -71,11 +71,7 @@ const chartConfig = {
     color: "#EC4899",
   },
 } satisfies ChartConfig;
-export default function PersonaHistory({
-  wallet,
-}: {
-  wallet: string | undefined;
-}) {
+export default function PersonaHistory() {
   const [history, setHistory] = useState<PersonaScoreItemWithMonth[]>([]);
   useEffect(() => {
     const fetchData = async () => {

@@ -24,14 +24,13 @@ export default function Persona() {
     }, 500); // 마지막 빠르게 한 바퀴 돌고 정지
   };
   const router = useRouter();
-  const { data, isLoading, error, updateFetch }: UsePersonaDataReturn =
-    usePersonaData(primaryWallet?.address);
+  const { data }: UsePersonaDataReturn = usePersonaData(primaryWallet?.address);
 
   useEffect(() => {
     if (!primaryWallet?.address) {
       router.push("/");
     }
-  }, [primaryWallet?.address]);
+  }, [primaryWallet?.address, router]);
 
   return (
     <div>

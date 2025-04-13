@@ -1,36 +1,34 @@
 import { CommunityContract } from "@/types";
 import { SquareArrowOutUpRight } from "lucide-react";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 export default function SimilarPersonaCommunity({
   sortedUserType,
 }: {
   sortedUserType: string[];
 }) {
-  const [similarCommunity, setSimilarCommunity] = useState<CommunityContract[]>(
-    [
-      {
-        contract_address: "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
-        frequency: 245,
-      },
-      {
-        contract_address: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
-        frequency: 189,
-      },
-      {
-        contract_address: "0x6b175474e89094c44da98b954eedeac495271d0f",
-        frequency: 156,
-      },
-      {
-        contract_address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-        frequency: 132,
-      },
-      {
-        contract_address: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-        frequency: 98,
-      },
-    ]
-  );
-  const getTopGroupCombos = () => {
+  const [similarCommunity] = useState<CommunityContract[]>([
+    {
+      contract_address: "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+      frequency: 245,
+    },
+    {
+      contract_address: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+      frequency: 189,
+    },
+    {
+      contract_address: "0x6b175474e89094c44da98b954eedeac495271d0f",
+      frequency: 156,
+    },
+    {
+      contract_address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      frequency: 132,
+    },
+    {
+      contract_address: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+      frequency: 98,
+    },
+  ]);
+  const getTopGroupCombos = useCallback(() => {
     const sorted = sortedUserType; // ["Explorer", "Diamond", "Whale", "Degen"]
 
     if (sorted.length < 4) return [];
@@ -40,11 +38,11 @@ export default function SimilarPersonaCommunity({
       `${sorted[0]}_${sorted[2]}`,
       `${sorted[0]}_${sorted[3]}`,
     ];
-  };
+  }, [sortedUserType]);
   const comboString = useMemo(() => {
     const c = getTopGroupCombos();
     return c.join(",");
-  }, [sortedUserType]);
+  }, [getTopGroupCombos]);
 
   useEffect(() => {
     if (!comboString) return;

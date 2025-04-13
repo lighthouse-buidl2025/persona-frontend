@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, KeyboardEvent } from "react";
 import useAgents, { Agent } from "@/hooks/use-agents";
 import { useAgentStore } from "@/stores/use-agent-store";
 import { toast } from "sonner";
+import Image from "next/image";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 
 interface Message {
@@ -16,7 +17,7 @@ interface Message {
 
 export default function AIAssistant({ className }: { className?: string }) {
   const [message, setMessage] = useState("");
-  const { agents, filteredAgents, isLoading, error, selectAgent } = useAgents();
+  const { agents, isLoading, error, selectAgent } = useAgents();
   const { selectedAgentId, setAgentId } = useAgentStore();
 
   const { primaryWallet } = useDynamicContext();
@@ -56,7 +57,7 @@ export default function AIAssistant({ className }: { className?: string }) {
   if (error) return <p>Error: {error.message}</p>;
 
   const selectedAgent = agents?.find(
-    (agent: any) => agent.id === selectedAgentId
+    (agent: Agent) => agent.id === selectedAgentId
   );
 
   const handleAgentChange = (id: string) => {
@@ -64,7 +65,7 @@ export default function AIAssistant({ className }: { className?: string }) {
     selectAgent(id);
     toast.success(
       `에이전트가 변경되었습니다: ${
-        agents?.find((agent: any) => agent.id === id)?.name
+        agents?.find((agent: Agent) => agent.id === id)?.name
       }`
     );
   };
@@ -175,7 +176,7 @@ export default function AIAssistant({ className }: { className?: string }) {
             value={selectedAgentId || ""}
             onChange={(e) => handleAgentChange(e.target.value)}
           >
-            {agents?.map((agent: any) => (
+            {agents?.map((agent: Agent) => (
               <option key={agent.id} value={agent.id}>
                 {agent.name}
               </option>
@@ -188,7 +189,7 @@ export default function AIAssistant({ className }: { className?: string }) {
       {selectedAgent && (
         <div className="flex items-center gap-2 mb-3 px-2 w-full">
           {selectedAgent.avatarUrl && (
-            <img
+            <Image
               src={selectedAgent.avatarUrl}
               alt={selectedAgent.name}
               className="w-8 h-8 rounded-full"

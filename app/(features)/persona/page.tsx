@@ -15,7 +15,7 @@ import { toast } from "sonner";
 export default function Dashboard() {
   const { primaryWallet } = useDynamicContext();
   const { data, isLoading } = usePersonaData(primaryWallet?.address);
-  const sorted = useMemo(() => getSortedUserType(data), []);
+  const sorted = useMemo(() => getSortedUserType(data), [data]);
   const { data: groupData, error } = usePersonaGroup({
     address: primaryWallet?.address,
     group: sorted.slice(0, 2).join("_"),
