@@ -186,7 +186,7 @@ export default function Persona() {
         </div>
       </div>
       <div>
-        <PersonaHistory wallet={primaryWallet?.address} />
+        <PersonaHistory />
       </div>
     </div>
   );
