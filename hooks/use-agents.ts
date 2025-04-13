@@ -20,11 +20,11 @@ export default function useAgents() {
     queryKey: ["agents"],
     queryFn: async () => {
       // TODO: API 구현 후 주석 해제
-      const response = await fetch("/api/eliza-agent/agents");
-      const json = await response.json();
-      console.log(json);
-      return json.data.agents;
-      // return dummyAgents.agents;
+      // const response = await fetch("/api/eliza-agent/agents");
+      // const json = await response.json();
+      // console.log(json);
+      // return json.data.agents;
+      return dummyAgents.agents;
     },
   });
 

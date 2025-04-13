@@ -3,12 +3,11 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState, KeyboardEvent } from "react";
-import useAgents, { Agent } from "@/hooks/use-agents";
+import useAgents from "@/hooks/use-agents";
 import { useAgentStore } from "@/stores/use-agent-store";
 import { toast } from "sonner";
-import Image from "next/image";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
-
+import { TypingIndicator } from "./typing-indicator";
 interface Message {
   action: string;
   text: string;
@@ -17,9 +16,9 @@ interface Message {
 
 export default function AIAssistant({ className }: { className?: string }) {
   const [message, setMessage] = useState("");
-  const { agents, isLoading, error, selectAgent } = useAgents();
+  const { agents, error, selectAgent } = useAgents();
   const { selectedAgentId, setAgentId } = useAgentStore();
-
+  const [isTyping, setIsTyping] = useState(false);
   const { primaryWallet } = useDynamicContext();
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -53,29 +52,14 @@ export default function AIAssistant({ className }: { className?: string }) {
     }
   }, []);
 
-  if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-
-  const selectedAgent = agents?.find(
-    (agent: Agent) => agent.id === selectedAgentId
-  );
-
-  const handleAgentChange = (id: string) => {
-    setAgentId(id);
-    selectAgent(id);
-    toast.success(
-      `에이전트가 변경되었습니다: ${
-        agents?.find((agent: Agent) => agent.id === id)?.name
-      }`
-    );
-  };
 
   const submit = async () => {
     if (!selectedAgentId) {
       toast.error("Agent not selected");
       return;
     }
-
+    setIsTyping(true);
     if (!message.trim()) {
       return; // 빈 메시지는 전송하지 않습니다
     }
@@ -129,6 +113,8 @@ export default function AIAssistant({ className }: { className?: string }) {
       });
 
       toast.error("메시지 전송에 실패했습니다.");
+    } finally {
+      setIsTyping(false);
     }
 
     // 메시지 전송 후 스크롤을 아래로 내립니다
@@ -170,37 +156,7 @@ export default function AIAssistant({ className }: { className?: string }) {
         <h1 className="text-xl font-bold text-white font-[family-name:var(--font-poppins)]">
           AI Assistant
         </h1>
-        <div className="relative">
-          <select
-            className="bg-indigo-600 text-white rounded px-2 py-1 text-sm"
-            value={selectedAgentId || ""}
-            onChange={(e) => handleAgentChange(e.target.value)}
-          >
-            {agents?.map((agent: Agent) => (
-              <option key={agent.id} value={agent.id}>
-                {agent.name}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
-
-      {/* 에이전트 정보 섹션 */}
-      {selectedAgent && (
-        <div className="flex items-center gap-2 mb-3 px-2 w-full">
-          {selectedAgent.avatarUrl && (
-            <Image
-              src={selectedAgent.avatarUrl}
-              alt={selectedAgent.name}
-              className="w-8 h-8 rounded-full"
-            />
-          )}
-          <div>
-            <p className="text-sm font-semibold">{selectedAgent.name}</p>
-            <p className="text-xs text-gray-500">{selectedAgent.description}</p>
-          </div>
-        </div>
-      )}
 
       {/* 스크롤 가능한 메시지 컨테이너 - 고정 높이 설정 */}
       <div
@@ -227,6 +183,7 @@ export default function AIAssistant({ className }: { className?: string }) {
               </div>
             </div>
           ))}
+          {isTyping && <TypingIndicator />}
         </div>
       </div>
 
